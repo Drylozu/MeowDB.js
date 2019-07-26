@@ -56,7 +56,7 @@ class MeowDB {
      * Set data of an element in the database
      * @param {string} id The ID of element to edit
      * @param {*} value The value to set (if not defined, the element will be undefined)
-     * @returns {void} Nothing
+     * @returns {promise} Only if error
      */
     async set(id, value) {
         if (!(Utils.checkId(id))) return Promise.reject(new ErrorDB("Invalid ID to set data"));

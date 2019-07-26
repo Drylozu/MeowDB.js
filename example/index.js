@@ -18,4 +18,11 @@
     console.log("Current all data in 'Users' database: ", allData);
     let sortByMoney = await usrs.sort("*", "money");
     console.log("Users sorted descending by 'money':", sortByMoney);
+    let dataUser = await usrs.get("000001");
+    dataUser.money += 150 * Math.PI;
+    dataUser.banks[0].money = dataUser.money - dataUser.banks[1].money;
+    await dataUser.save();
+    console.log("Money after aument:", await usrs.get("000001.money"));
+    await usrs.set("000002.money", -1837);
+    console.log(`Now the user '000002' has ${await usrs.get("000002.money")} of money`);
 })();

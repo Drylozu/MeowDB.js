@@ -68,7 +68,7 @@ module.exports = {
         for (let i = 0; i < id.length; i++) {
             info += `["${id[i]}"]`;
             if (i === (id.length - 1)) {
-                let readableData = typeof sValue === "string" ? `"${sValue}"` : typeof sValue === "object" && !(sValue instanceof Array) ? `${JSON.stringify(sValue)}` : typeof sValue === "object" && sValue instanceof Array ? `[${sValue}]` : `${sValue}`;
+                let readableData = typeof data === "string" ? `"${data}"` : typeof data === "object" && !(data instanceof Array) ? `${JSON.stringify(data)}` : typeof data === "object" && data instanceof Array ? `[${data}]` : `${data}`;
                 await eval(`allData${info} = ${readableData};`);
             } else {
                 let out = await eval(`allData${info}`);
