@@ -1,6 +1,6 @@
 {
   "name": "meowdb",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Database in JSON",
   "main": "src/index.js",
   "scripts": {

@@ -1,7 +1,8 @@
 # meowdb
 #### Database in JSON (Node.JS Library)
 ## Installation
-- `npm install --save meowdb`
+- `npm install --save meowdb`.
+
 Example usage:
 ```js
 (async () => {
@@ -32,7 +33,7 @@ Example usage:
 })();
 ```
 
-## Implementation with `discord.js` or `Eris`
+## Implementation with `discord.js` or `eris`
 It's very simple set and get info from the database, look this example from how to use it in a Discord Bot:
 ```js
 const path = require("path");
