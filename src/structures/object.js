@@ -1,17 +1,21 @@
+const Utils = require("../utils.js");
 const path = require("path");
 const fs = require("fs");
 
 /**
  * A Object item from a database
  */
-class ObjectDB {
-    /**
-     * Creates a DBObject with a method to save data
-     * @param {object} obj The object to parse into a DBObject
-     */
-    constructor(dir, group, id, obj) {
+class MeowObjectDB {
+     /**
+      * Creates a Object but with a method to save data
+      * @param {string} dir The dir that stores all databases
+      * @param {string} name The name of the database
+      * @param {string} id The ID of the object in the database
+      * @param {object} obj The object to parse into a ObjectDB
+      */
+    constructor(dir, name, id, obj) {
         Object.entries(obj).forEach((o) => this[o[0]] = o[1]);
-        this._group = group;
+        this._name = name;
         this._dir = dir;
         this._id = id;
     }
@@ -21,13 +25,13 @@ class ObjectDB {
      * @returns {void} Nothing
      */
     async save() {
-        let data = await JSON.parse(fs.readFileSync(path.join(this._dir, `${this._group}.json`)));
+        let data = await Utils.readAllData(path.join(this._dir, `${this._name}.json`))
         Object.entries(this).forEach((o) => {
             if (o[0].startsWith("_")) return;
             data[this._id][o[0]] = o[1];
         });
-        await fs.writeFileSync(path.join(this._dir, `${this._group}.json`), data);
+        await Utils.saveData(path.join(this._dir, `${this._name}.json`), data);
     }
 }
 
-module.exports = ObjectDB;
+module.exports = MeowObjectDB;
