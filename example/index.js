@@ -17,5 +17,5 @@
     let allData = await usrs.all();
     console.log("Current all data in 'Users' database: ", allData);
     let sortByMoney = await usrs.sort("*", "money");
-    console.log("Users sorted by 'money'", sortByMoney);
+    console.log("Users sorted descending by 'money':", sortByMoney);
 })();

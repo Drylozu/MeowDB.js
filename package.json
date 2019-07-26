@@ -1,16 +1,25 @@
 {
   "name": "meowdb",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Database in JSON",
   "main": "src/index.js",
   "scripts": {
     "test": "node example/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Drylotrans/meowdb.git"
+  },
   "keywords": [
+    "fs",
+    "file system",
     "database",
     "db",
     "json"
   ],
   "author": "Drylotrans",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Drylotrans/meowdb/issues"
+  }
 }

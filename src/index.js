@@ -85,9 +85,9 @@ class MeowDB {
 }
 
 module.exports = async (dbDir) => {
-    if (typeof dbDir !== "string") dir = require.main ? path.join(require.main.dirname, "databases") : __dirname;
-    if (!fs.existsSync(dbDir)) throw new ErrorDB("Invalid directory to store databases");
-    if (!fs.statSync(dbDir).isDirectory()) throw new ErrorDB("Invalid directory to store databases");
+    if (typeof dbDir !== "string") dbDir = require.main ? path.join(require.main.dirname, "meow-databases") : path.join(__dirname, "meow-databases");
+    if (!fs.existsSync(dbDir)) await fs.mkdirSync(dbDir);
+    if (!fs.statSync(dbDir).isDirectory()) await fs.mkdirSync(dbDir);
     dir = dbDir;
     return MeowDB;
 }
