@@ -1,10 +1,10 @@
 {
   "name": "meowdb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Database in JSON",
   "main": "src/index.js",
   "scripts": {
-    "test": "node examle/index.js"
+    "test": "node example/index.js"
   },
   "keywords": [
     "database",
