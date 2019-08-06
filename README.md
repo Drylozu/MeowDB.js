@@ -3,7 +3,7 @@
 ## Installation
 - `npm install --save meowdb`.
 
-Example usage (you can look at a more detailed example at examples/index.js!):
+Example usage (you can look at a more detailed examples at example/!):
 ```js
 const path = require("path");
 // Initialize MeowDB in a specific directory
