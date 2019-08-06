@@ -22,15 +22,15 @@ class MeowObjectDB {
 
     /**
      * Save the information edited or no
-     * @returns {void} Nothing
+     * @returns {undefined}
      */
-    async save() {
-        let data = await Utils.readAllData(path.join(this._dir, `${this._name}.json`))
+    save() {
+        let data = Utils.readAllData(path.join(this._dir, `${this._name}.json`))
         Object.entries(this).forEach((o) => {
             if (o[0].startsWith("_")) return;
             data[this._id][o[0]] = o[1];
         });
-        await Utils.saveData(path.join(this._dir, `${this._name}.json`), data);
+        Utils.saveData(path.join(this._dir, `${this._name}.json`), data);
     }
 }
 
