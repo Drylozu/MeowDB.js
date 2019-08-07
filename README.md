@@ -109,7 +109,7 @@ Creates an element (Alias Object, ID) with a optionaly start value (default: `{}
 
 Returns: `void`
 ```js
-await DB.create("Juan0001", {
+DB.create("Juan0001", {
     id: 1923779128
 });
 ```
