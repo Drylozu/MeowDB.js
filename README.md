@@ -75,6 +75,9 @@ await message.channel.send(`Your new balance is: ${user.money}\nAnd your XP: ${u
             * `DB.get(id)`
             * `DB.set(id, value)`
             * `DB.sort(id, element, ascending?)`
+            * `DB.last()`
+            * `DB.delete(id)`
+            * `DB.wipe()`
 
 2. [Structures](#structures)
     * `new MeowErrorDB(msg?)`
@@ -90,6 +93,8 @@ await message.channel.send(`Your new balance is: ${user.money}\nAnd your XP: ${u
     * `getData(id, path, all?)`
     * `setData(id, path, data)`
     * `saveData(path, data)`
+    * `exists(path)`
+    * `delete(path, name)`
 
 ## Initialize
 ### MeowDB(dir?)
@@ -99,19 +104,26 @@ Returns: `Promise<MeowDB>`
 ```js
 const MeowDB = require("meowdb")("<dir>");
 ```
-#### new DB(name)
-Creates a new database with the name specified.
+#### new DB(name, start_autoincrement)
+Creates a new database with the name specified which will start the autoincrement in "start_autoincrement" (default: 0).
 ```js
 const db = new MeowDB("firstDatabase");
 ```
 #### DB.create(id, startValue?)
-Creates an element (Alias Object, ID) with a optionaly start value (default: `{}`).
+Creates an element (Alias Object, ID) with a optionaly start value (default: `{}`). To instead of giving the ID a name, you want it to autoincrement, use the id "autoincrement" (if you are confused check out examples/autoincrement.js).
 
 Returns: `void`
 ```js
 DB.create("Juan0001", {
     id: 1923779128
 });
+
+DB.create("autoincrement", {
+    name: "Juan"
+})
+
+console.log(DB.get(DB.last())) // {... name: "Juan" ...}
+
 ```
 #### DB.all()
 Get all saved data.
@@ -144,6 +156,34 @@ Returns: `Array`
 ```js
 let dataSort = DB.sort("*", "id", true);
 console.log(dataSort);
+```
+
+#### DB.last()
+Get the last entry id made with autoincrement
+
+Returns: `Number`
+```js
+let lastId = DB.last();
+console.log(lastId)
+```
+
+#### DB.wipe()
+Delete entirely the database file (WARNING: There is no way of getting the data of this database back, unless you have a backup)
+
+Returns: `the voidness of your database being deleted (or void)`
+```js
+DB.wipe();
+DB.get('0'); // will throw: "MeowDB: Cannot find the database file."
+```
+
+#### DB.delete(id)
+Delete a entry from the database
+
+Returns: `void`
+```js
+DB.create('0', {});
+DB.delete('0');
+console.log(DB.get('0') === undefined) // true
 ```
 
 ## Structures
@@ -226,4 +266,20 @@ Saves the data specified to the json file.
 Returns: `void`
 ```js
 Utils.saveData("<FileJSON>", JSON.stringify({ data: "some data" }));
+```
+
+### exists(path)
+Checks if the file in path exists.
+
+Returns: `boolean`
+```js
+Utils.exists("<FileJSON>")
+```
+
+### delete(path, name)
+Deletes the database "name" in "path"
+
+Returns: `void`
+```js
+Utils.delete("<DatabasesPath", "<FileJSON>")
 ```
