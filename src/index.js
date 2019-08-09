@@ -14,31 +14,70 @@ class MeowDB {
      * Creates a new database
      * @param {string} name The name of the database
      */
-    constructor(name) {
+    constructor(name, start_autoincrement = 0) {
         if (!(Utils.checkName(name))) throw new ErrorDB("Invalid name of database");
         Utils.create(dir, name);
         dbs.push(name);
         this._name = name;
+        this._start_autoincrement = start_autoincrement;
     }
 
     /**
      * Creates a new object in the database, if already exists it don't creates or modify anything
-     * @param {string} id The ID to create and store data
-     * @param {*} sValue The value to store by default in the database (default: "{}")
+     * @param {string} id The ID to create and store data (If the id is equal to "autoincrement" autoincrement will be used to determine the id of your entry)
+     * @param {any} sValue The value to store by default in the database (default: "{}")
      * @return {object} The object you just created
      * @return {ObjectDB} If it's object it returns a ObjectDB
      * @throws {ErrorDB}
      */
     create(id, sValue = {}) {
-        if (!(Utils.checkId(id))) throw new ErrorDB("Invalid ID to store data");
-        var data = Utils.createData(id, path.join(dir, `${this._name}.json`), sValue);
-        if (typeof data === "object" && !(data instanceof Array)) return new ObjectDB(dir, this._name, id, sValue);
+        let defId = id;
+        if(id === "autoincrement") {
+            var AutoIncrementDb = new MeowDB("autoincrementhandler");
+            if(!AutoIncrementDb.get(this._name)) { // just for safety
+                AutoIncrementDb.create(this._name, this._start_autoincrement)
+            }
+            AutoIncrementDb.set(this._name, AutoIncrementDb.get(this._name) + 1)
+            defId = AutoIncrementDb.get(this._name).toString();
+        }
+        if (!(Utils.checkId(defId))) throw new ErrorDB("Invalid ID to store data");
+        var data = Utils.createData(defId, path.join(dir, `${this._name}.json`), sValue);
+        if (typeof data === "object" && !(data instanceof Array)) return new ObjectDB(dir, this._name, defId, sValue);
         else return data;
+    }
+    /**
+     * Get the last entry id made with autoincrement
+     * @return {string} The id
+     * @throws {ErrorDB}
+     */
+    last() {
+        var AutoIncrementDb = new MeowDB("autoincrementhandler");
+        var id = AutoIncrementDb.get(this._name)
+        if(!id) throw new ErrorDB('No autoincrement entry has been ever made in this database.')
+        return id.toString();
+    }
+    /** 
+     * Delete entirely the database file (WARNING: There is no way of getting the data of this database back, unless you have a backup)
+     * @return {void}
+     * @throws {ErrorDB}
+     */
+    wipe() {
+        Utils.delete(dir, this._name);
+    }
+    /**
+     * Delete a entry from the database
+     * @return {void}
+     * @param {any} id 
+     * @throws {ErrorDB}
+     */
+    delete(id) {
+        Utils.deleteData(id, path.join(dir, `${this._name}.json`))
     }
 
     /**
      * Get all data from database
      * @return {object} All data from database
+     * @throws {ErrorDB}
      */
     all() {
         return Utils.readAllData(path.join(dir, `${this._name}.json`));
@@ -49,7 +88,7 @@ class MeowDB {
      * @param {string} id The ID of element to get
      * @return {ObjectDB} If it's object it returns a ObjectDB
      * @return {any} The information
-     * @throws {ErrorDb}
+     * @throws {ErrorDB}
      */
     get(id) {
         if (!(Utils.checkId(id))) throw new ErrorDB("Invalid ID to get data");
@@ -78,7 +117,7 @@ class MeowDB {
      * @param {string} element The element (property) to check
      * @param {boolean} ascending If the data must be ascending (default: false)
      * @return {Array} An array with the data sorted
-     * @throws {ErrorDb}
+     * @throws {ErrorDB}
      */
     sort(id, element, ascending = false) {
         if (!(Utils.checkId(id, true))) throw new ErrorDB("Invalid ID to sort data");
