@@ -69,7 +69,7 @@ await message.channel.send(`Your new balance is: ${user.money}\nAnd your XP: ${u
 ## API
 1. [Initialize](#initialize)
     * `MeowDB(dir?)`
-        * `new DB(name)`
+        * `new DB(name, start_autoincrement)`
             * `DB.create(id, startValue?)`
             * `DB.all()`
             * `DB.get(id)`
@@ -110,7 +110,7 @@ Creates a new database with the name specified which will start the autoincremen
 const db = new MeowDB("firstDatabase");
 ```
 #### DB.create(id, startValue?)
-Creates an element (Alias Object, ID) with a optionaly start value (default: `{}`). To instead of giving the ID a name, you want it to autoincrement, use the id "autoincrement" (if you are confused check out examples/autoincrement.js).
+Creates an element (Alias Object, ID) with a optionaly start value (default: `{}`). To instead of giving the ID a name, you want it to autoincrement, use the id "autoincrement" (if you are confused check out example/autoincrement.js).
 
 Returns: `void`
 ```js
