@@ -1,6 +1,6 @@
 # meowdb
 > Database in JSON (Node.JS Library).
->> Released v2.0.0
+>> Released v2.0.1
 
 
 ## Installation
@@ -40,6 +40,7 @@ setTimeout(() => {
 }, 1500);
 ```
 
+
 ## Implementation with `discord.js` or `eris`
 It's very simple set and get info from the database, look this example from how to use it in a Discord Bot:
 ```js
@@ -66,7 +67,8 @@ UsersDB.get(message.author.id).then((user) => {
 }); // Adds 1.25 of experience to the user and sets the level of the user
 ```
 
-## Documentation
+
+## "Documentation"
 - `new MeowDB(options)`
     * `create(id, startValue)`
     * `exists(id)`
@@ -74,6 +76,7 @@ UsersDB.get(message.author.id).then((user) => {
     * `set(id, value)`
     * `all()`
     * `delete(id)`
+
 
 
 ### new MeowDB(options)
