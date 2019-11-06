@@ -1,6 +1,7 @@
 # meowdb
-> Database in JSON (Node.JS Library).
->> Released v2.0.1
+Database in JSON (Node.JS Library).
+
+**Released v2.0.1**.
 
 
 ## Installation
