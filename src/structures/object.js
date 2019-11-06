@@ -1,37 +1,50 @@
-const Utils = require("../utils.js");
-const path = require("path");
+const DBError = require("./Error.js");
 const fs = require("fs");
+
+function validValue(value) {
+    if (typeof value === "string") return true;
+    if (typeof value === "number") return true;
+    if (typeof value === "object") return true;
+    if (typeof value === "boolean") return true;
+    return false;
+}
+
+let File;
 
 /**
  * A Object item from a database
  */
-class MeowObjectDB {
-     /**
-      * Creates a Object but with a method to save data
-      * @param {string} dir The dir that stores all databases
-      * @param {string} name The name of the database
-      * @param {string} id The ID of the object in the database
-      * @param {object} obj The object to parse into a ObjectDB
-      */
-    constructor(dir, name, id, obj) {
-        Object.entries(obj).forEach((o) => this[o[0]] = o[1]);
-        this._name = name;
-        this._dir = dir;
-        this._id = id;
+class MeowDBObject {
+    /**
+     * Creates an Object but with a method to save data
+     * @param {object} obj The object
+     * @param {string} id The ID of the element
+     * @param {string} file The path of the file
+     */
+    constructor(obj, id, file) {
+        if (id !== "/") this.__id = id;
+        File = file;
+        Object.entries(obj).forEach((i) => this[i[0]] = i[1]);
     }
 
     /**
-     * Save the information edited or no
-     * @returns {void} Nothing
+     * Saves the information of the object edited or no
      */
-    async save() {
-        let data = await Utils.readAllData(path.join(this._dir, `${this._name}.json`))
-        Object.entries(this).forEach((o) => {
-            if (o[0].startsWith("_")) return;
-            data[this._id][o[0]] = o[1];
+    save() {
+        let allData = JSON.parse(fs.readFileSync(File));
+        let info = "";
+        if (this.__id) this.__id.split(".").forEach((s) => {
+            info += `["${s}"]`;
         });
-        await Utils.saveData(path.join(this._dir, `${this._name}.json`), data);
+        Object.entries(this).forEach((i) => {
+            if (i[0].startsWith("__")) return;
+            if (!validValue(i[1])) return Promise.reject(new DBError("One of the defined values aren't a string, number or an object"));
+            let readableData = typeof i[1] === "string" ? `"${i[1]}"` : typeof i[1] === "object" && !(i[1] instanceof Array) ? `${JSON.stringify(i[1])}` : typeof i[1] === "object" && (i[1] instanceof Array) ? `[${i[1]}]` : `${i[1]}`;
+            eval(`allData${info}["${i[0]}"] = ${readableData};`);
+        });
+        fs.writeFileSync(File, JSON.stringify(allData));
+        return Promise.resolve(Object.assign(eval(`allData${info}`), { __id: this.__id }));
     }
 }
 
-module.exports = MeowObjectDB;
+module.exports = MeowDBObject;

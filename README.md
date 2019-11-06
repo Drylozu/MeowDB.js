@@ -1,211 +1,94 @@
 # meowdb
-#### Database in JSON (Node.JS Library)
+> Database in JSON (Node.JS Library).
+>> Released v2.0.0
+
+
 ## Installation
-- `npm install --save meowdb`.
+- `npm install meowdb --save`.
+
 
 Example usage:
 ```js
-(async () => {
-    const path = require("path");
-    // Initialize MeowDB in a specific directory
-    const MeowDB = await require("../src/index.js")(path.join(__dirname, "databases"));
-    // Creates a database called "Users"
-    const usrs = new MeowDB("Users");
-    // Creates an object (or ID) in the database
-    await usrs.create("000001", {
-        money: 1,
-        info: "I only have 1$...",
-        names: ["Johnny", "Gilmer"],
-        banks: [{ id: 0823, name: "MonsterCard", money: 0.2 }, { id: 5362, name: "Colombian Bank", money: 0.8 }]
+const meowdb = require("meowdb");
+const UsersDB = new meowdb({
+    dir: __dirname,
+    name: "usersExampleDatabase"
+});
+
+UsersDB.create("0001", {
+    name: "David",
+    country: "CO",
+    info: "Nothing to show",
+    couple: "Mon"
+}).then((user) => console.log(`Created user ${user.name}. ${user.name} lives in ${user.country}. ${user.name} loves ${user.couple} 💕`));
+
+UsersDB.get("0001").then((user) => {
+    user.info = "A simple person";
+    user.save().then((newUser) => console.log(`New ${newUser.name} info:`, newUser.info));
+});
+
+UsersDB.all().then((users) => {
+    let out = "Users list:";
+    Object.entries(users).forEach((user) => {
+        out += `  - ${user[1].name} (${user[0]})`;
     });
-    await usrs.create("000002", {
-        money: 9999,
-        info: "I have a lot of money, more than Deivid",
-        names: ["Henry", "Harper"],
-        banks: [{ id: 9283, name: "Savi", money: 1887 }, { id: 1502, name: "Bank of the Republic", money: 8112 }]
-    });
-    // Shows all info stored
-    let allData = await usrs.all();
-    console.log("Current all data in 'Users' database: ", allData);
-    // Sorts descending the users by money
-    let sortByMoney = await usrs.sort("*", "money");
-    console.log("Users sorted descending by 'money':", sortByMoney);
-})();
+    console.log(out);
+});
+
+setTimeout(() => {
+    UsersDB.delete("0001").then((user) => console.log(`User ${user.name} deleted from the database`));
+}, 1500);
 ```
 
 ## Implementation with `discord.js` or `eris`
 It's very simple set and get info from the database, look this example from how to use it in a Discord Bot:
 ```js
-const path = require("path");
-const MeowDB = await require("../src/index.js")(path.join(__dirname, "databases"));
-const usrs = new MeowDB("Users");
-await usrs.create(message.author.id, {
-    money: 0,
+const meowdb = require("meowdb");
+const UsersDB = new meowdb({
+    dir: __dirname,
+    name: "users"
+});
+
+// Event message/messageCreate
+UsersDB.create(message.author.id, {
     lvl: 0,
     xp: 0
-});
+}); // Only creates the user if it doesn't exists in the database
 
-let dataUser = await usrs.get(message.author.id);
-await message.channel.send(`Adding 100$ and 200XP in your account.\n**Actual balance**: ${dataUser.money}. **Actual XP**: ${dataUser.xp}.`);
-dataUser.money += 100;
-dataUser.xp += 200;
-await dataUser.save();
+UsersDB.get(message.author.id).then((user) => {
+    user.xp += 1.25;
+    if (xp === 10) user.lvl = 1;
+    if (xp === 25) user.lvl = 2;
+    if (xp === 40) user.lvl = 3;
+    if (xp === 65) user.lvl = 4;
+    if (xp === 80) user.lvl = 5;
+    user.save();
+}); // Adds 1.25 of experience to the user and sets the level of the user
 ```
 
-## API
-1. [Initialize](#initialize)
-    * `MeowDB(dir?)`
-        * `new DB(name)`
-            * `DB.create(id, startValue?)`
-            * `DB.all()`
-            * `DB.get(id)`
-            * `DB.set(id, value)`
-            * `DB.sort(id, element, ascending?)`
+## Documentation
+- `new MeowDB(options)`
+    * `create(id, startValue)`
+    * `exists(id)`
+    * `get(id)`
+    * `set(id, value)`
+    * `all()`
+    * `delete(id)`
 
-2. [Structures](#structures)
-    * `new MeowErrorDB(msg?)`
-    * `new MeowObjectDB(dir, name, id, obj)` 
-        * `ObjDB.save()`
 
-3. [Utils](#utils)
-    * `create(path, name)`
-    * `checkName(name)`
-    * `checkId(id, acceptAll?)`
-    * `createData(id, path, sValue)`
-    * `readAllData(path)`
-    * `getData(id, path, all?)`
-    * `setData(id, path, data)`
-    * `saveData(path, data)`
+### new MeowDB(options)
+Creates or gets a database.
 
-## Initialize
-### MeowDB(dir?)
-Initializes databases in the specified dir (default: `<ProjectApp>/meow-databases/`).
+**Parameters**:
+* `options` - An object with the options
+    * `options.dir` - A string indicating the   directory that will have the database
+    * `options.name` - A string with the name of the database
 
-Returns: `Promise<MeowDB>`
-```js
-const MeowDB = require("meowdb")("<dir>");
-```
-#### new DB(name)
-Creates a new database with the name specified.
-```js
-const db = new MeowDB("firstDatabase");
-```
-#### DB.create(id, startValue?)
-Creates an element (Alias Object, ID) with a optionaly start value (default: `{}`).
 
-Returns: `void`
-```js
-await DB.create("Juan0001", {
-    id: 1923779128
-});
-```
-#### DB.all()
-Get all saved data.
-
-Returns: `Promise<Object>`
-```js
-let allData = await DB.all();
-console.log(allData);
-```
-#### DB.get(id)
-Get all data from an specific ID (Alias Element, Object).
-
-Returns: `Promise<*>` (`Promise<MeowObjectDB>` if it's a Object)
-```js
-let data = await DB.get("Juan0001").
-console.log(data);
-```
-#### DB.set(id, value)
-Set data of an specific element (ID).
-
-Returns: `void`
-```js
-await DB.set("Juan0001.id", 1);
-```
-#### DB.sort(id, element, ascending?)
-Sort all entries from a ID in a respective element (default ascending: false, use "*" in id to get from the root of data).
-
-Returns: `Promise<Array>`
-```js
-let dataSort = await DB.sort("*", "id", true);
-console.log(dataSort);
-```
-
-## Structures
-### new MeowErrorDB(msg?)
-Error to send from the MeowDB (default message: "Unknow error").
-```js
-throw new MeowErrorDB("Some error");
-```
-### new MeowObjectDB(dir, name, id, obj)
-A Object item from a database, creates a Object but with a method to save data.
-```js
-let ObjDB = new MeowObjectDB("<dir>", "firstDatabase", "Juan0001", { id: 1 });
-console.log(ObjDB.id);
-```
-#### ObjDB.save()
-Save the information edited or no.
-
-Returns: `void`
-```js
-ObjDB.id = 132312323;
-await ObjDB.save();
-```
-## Utils
-### create(path, name)
-Creates the file `.json` that stores the data.
-
-Returns: `void`
-```js
-await Utils.create("<path>", "<name>");
-```
-### checkName(name)
-Check if the name is valid (false if isn't).
-
-Returns: `Boolean`
-```js
-await Utils.checkName("someName");
-```
-### checkId(id, acceptAll?)
-Check if the ID is valid (false if isn't, default acceptAll: false). AcceptAll = "*".
-
-Returns: `Boolean`
-```js
-await Utils.checkId(id);
-```
-### createData(id, path, sValue)
-Creates the data and writes it in the file with the start value specified.
-
-Returns: `void`
-```js
-await Utils.createData("Juan0001", "<FileJSON>", {});
-```
-### readAllData(path)
-Read all data from a file.
-
-Returns: `Promise<Object>`
-```js
-let allData = await Utils.readAllData("<FileJSON>");
-console.log(allData);
-```
-### getData(id, path, all?)
-Get all data from a specified ID (default all: false). All = "*".
-
-Returns: `Promise<*>`
-```js
-let data = await Utils.getData("id", "<FileJSON>");
-console.log(allData);
-```
-### setData(id, path, data)
-Set data of a specified ID.
-
-Returns: `void`
-```js
-```
-### saveData(path, data)
-Saves the data specified.
-
-Returns: `void`
-```js
-await Utils.saveData("<FileJSON>", JSON.stringify({ data: "some data" }));
-```
+**Methods**:
+* `create(id, startValue)` - Creates an element in the database with the specified ID and sets it's value.
+* `exists(id)` - Returns true if exists an element with that ID, returns false if not.
+* `get(id)` - Returns the value of the element stored with that ID.
+* `set(id, value)` - Sets the value of an element.
+* `all()` - Returns all objects stored in the database.
+* `delete(id)` - Deletes an element from the database.

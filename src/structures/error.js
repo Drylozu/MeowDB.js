@@ -1,7 +1,7 @@
 /**
  * Error to send from the MeowDB
  */
-class MeowErrorDB extends Error {
+class MeowDBError extends Error {
     /**
      * @param {string} msg Descriptive message of the error
      */
@@ -12,4 +12,4 @@ class MeowErrorDB extends Error {
     }
 }
 
-module.exports = MeowErrorDB;
+module.exports = MeowDBError;

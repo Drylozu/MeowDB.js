@@ -1,93 +1,97 @@
-const ObjectDB = require("./structures/object.js");
-const ErrorDB = require("./structures/error.js");
-const Utils = require("./utils.js");
+const DBObject = require("./structures/Object.js");
+const DBError = require("./structures/Error.js");
+const Utils = require("./Utils.js");
 const path = require("path");
 const fs = require("fs");
-let dir = "";
-let dbs = [];
 
 /**
- * Represents a group of data
+ * Class used to create or get databases
  */
 class MeowDB {
     /**
-     * Creates a new database
-     * @param {string} name The name of the database
+     * Creates or gets a database
+     * @param {object} options The options of the database
+     * @param {string} options.dir The directory path of the database
+     * @param {string} options.name The name of the database
      */
-    constructor(name) {
-        if (!(Utils.checkName(name))) throw new ErrorDB("Invalid name of database");
-        Utils.create(dir, name);
-        dbs.push(name);
-        this._name = name;
+    constructor(options = {}) {
+        if (!options) throw new DBError("The options are required");
+        if (typeof options !== "object") throw new DBError("The options must be an object");
+        if (!options.dir) throw new DBError("The directory path is required");
+        if (!options.name) throw new DBError("The name of the database is required");
+        if (typeof options.dir !== "string") throw new DBError("The directory path must be an string");
+        if (typeof options.name !== "string") throw new DBError("The name of the database must be an string");
+        if (!fs.existsSync(options.dir)) throw new DBError("The directory must be valid");
+        if (options.name.length < 1) throw new DBError("The name must have more of one character");
+        if (!/[a-zA-Z0-9_]+/g.test(options.name)) throw new DBError("The name must only include letters, numbers and underscores");
+        if (!fs.existsSync(path.join(options.dir, `${options.name}.json`))) fs.writeFileSync(path.join(options.dir, `${options.name}.json`), "{}");
+        options.file = path.join(options.dir, `${options.name}.json`);
+        this._options = options;
+        this._utils = new Utils(path.join(options.dir, `${options.name}.json`));
     }
 
     /**
-     * Creates a new object in the database, if already exists it don't creates or modify anything
-     * @param {string} id The ID to create and store data
-     * @param {*} sValue The value to store by default in the database (default: "{}")
-     * @returns {void} Nothing
+     * Returns all data stored in the database
      */
-    async create(id, sValue = {}) {
-        if (!(await Utils.checkId(id))) return Promise.reject(new ErrorDB("Invalid ID to store data"));
-        await Utils.createData(id, path.join(dir, `${this._name}.json`), sValue);
+    all() {
+        return Promise.resolve(new DBObject(this._utils.getAll(), "/", path.join(this._options.dir, `${this._options.name}.json`)));
     }
 
     /**
-     * Get all data from database
-     * @returns {promise} All data from database
+     * Creates an element in the database
+     * @param {string} id The ID to create
+     * @param {*} value The initial value
      */
-    async all() {
-        return Promise.resolve(await Utils.readAllData(path.join(dir, `${this._name}.json`)));
+    create(id, sValue) {
+        if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
+        if (!this._utils.validValue(sValue)) return Promise.reject(new DBError("The value must be a string, number or an object"));
+        if (this._utils.get(id)) return Promise.resolve(this._utils.get(id));
+        else return Promise.resolve(Object.assign(this._utils.set(id, sValue, true), { __id: id }));
     }
 
     /**
-     * Get data of an element in the database
-     * @param {string} id The ID of element to get
-     * @returns {promise} The information (if it's object it be a ObjectDB) or an error
+     * Deletes an element from the database
+     * @param {string} id The ID of the element
      */
-    async get(id) {
-        if (!(await Utils.checkId(id))) return Promise.reject(new ErrorDB("Invalid ID to get data"));
-        let data = await Utils.getData(id, path.join(dir, `${this._name}.json`));
-        if (typeof data === "object" && !(data instanceof Array)) return Promise.resolve(new ObjectDB(dir, this._name, id, data));
+    delete(id) {
+        if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
+        let tmpData = this._utils.get(id);
+        if (!tmpData) return Promise.reject(new DBError("That element doesn't exists in the database"));
+        this._utils.set(id, undefined);
+        return Promise.resolve(Object.assign(tmpData, { __id: id }));
+    }
+
+    /**
+     * Checks if an element exists in the database
+     * @param {string} id The ID to check
+     */
+    exists(id) {
+        if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
+        if (this._utils.get(id)) return true;
+        else return false;
+    }
+
+    /**
+     * Gets an element of the database
+     * @param {string} id The ID of the element
+     */
+    get(id) {
+        if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
+        let data = this._utils.get(id);
+        if (typeof data === "object" && !(data instanceof Array)) return Promise.resolve(new DBObject(data, id, path.join(this._options.dir, `${this._options.name}.json`)));
         else return Promise.resolve(data);
     }
 
     /**
-     * Set data of an element in the database
-     * @param {string} id The ID of element to edit
-     * @param {*} value The value to set (if not defined, the element will be undefined)
-     * @returns {promise} Only if error
+     * Sets the value of an element in the database
+     * @param {string} id The ID of the element
+     * @param {*} value The value to be setted
      */
-    async set(id, value) {
-        if (!(Utils.checkId(id))) return Promise.reject(new ErrorDB("Invalid ID to set data"));
-        await Utils.setData(id, path.join(dir, `${this._name}.json`), value);
-    }
-
-    /**
-     * Sort all entries from a ID in a respective element
-     * @param {string} id The object ID to sort that element (* for all IDs)
-     * @param {string} element The element (property) to check
-     * @param {boolean} ascending If the data must be ascending (default: false)
-     * @returns {promise} An array with the data sorted or an error
-     */
-    async sort(id, element, ascending = false) {
-        if (!(await Utils.checkId(id, true))) return Promise.reject(new ErrorDB("Invalid ID to sort data"));
-        if (!(await Utils.checkName(element))) return Promise.reject(new ErrorDB("Invalid element to sort data"));
-        let data = await Utils.getData(id, path.join(dir, `${this._name}.json`), true);
-        if (typeof data !== "object") return Promise.reject(new ErrorDB("Invalid ID to sort data"));
-        if (!data[Object.keys(data)[0]][element]) return Promise.reject(new ErrorDB("Invalid element to sort data"));
-        let dataSort = Object.entries(data).sort(async (a, b) => {
-            if (ascending) return a[1][element] - b[1][element];
-            return b[1][element] - a[1][element];
-        });
-        return Promise.resolve(dataSort);
+    set(id, value) {
+        if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
+        if (!this._utils.validValue(sValue)) return Promise.reject(new DBError("The value must be a string, number or an object"));
+        return Promise.resolve(this._utils.set(id, value, false));
     }
 }
 
-module.exports = async (dbDir) => {
-    if (typeof dbDir !== "string") dbDir = require.main ? path.join(require.main.dirname, "meow-databases") : path.join(__dirname, "meow-databases");
-    if (!fs.existsSync(dbDir)) await fs.mkdirSync(dbDir);
-    if (!fs.statSync(dbDir).isDirectory()) await fs.mkdirSync(dbDir);
-    dir = dbDir;
-    return MeowDB;
-}
+module.exports = MeowDB;
