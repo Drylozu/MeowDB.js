@@ -89,7 +89,7 @@ class MeowDB {
      */
     set(id, value) {
         if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
-        if (!this._utils.validValue(sValue)) return Promise.reject(new DBError("The value must be a string, number or an object"));
+        if (!this._utils.validValue(value)) return Promise.reject(new DBError("The value must be a string, number or an object"));
         return Promise.resolve(this._utils.set(id, value, false));
     }
 }
