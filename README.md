@@ -1,7 +1,7 @@
 # meowdb
 Database in JSON (Node.JS Library).
 
-**Released v2.0.4**.
+**Released v2.0.5**.
 
 
 ## Installation
@@ -19,9 +19,8 @@ const UsersDB = new meowdb({
 UsersDB.create("0001", {
     name: "David",
     country: "CO",
-    info: "Nothing to show",
-    couple: "Mon"
-}).then((user) => console.log(`Created user ${user.name}. ${user.name} lives in ${user.country}. ${user.name} loves ${user.couple} 💕`));
+    info: "Nothing to show"
+}).then((user) => console.log(`Created user ${user.name}. ${user.name} lives in ${user.country}.`));
 
 UsersDB.get("0001").then((user) => {
     user.info = "A simple person";

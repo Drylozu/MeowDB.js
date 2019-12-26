@@ -26,12 +26,23 @@ class MeowDB {
         if (!/[a-zA-Z0-9_]+/g.test(options.name)) throw new DBError("The name must only include letters, numbers and underscores");
         if (!fs.existsSync(path.join(options.dir, `${options.name}.json`))) fs.writeFileSync(path.join(options.dir, `${options.name}.json`), "{}");
         options.file = path.join(options.dir, `${options.name}.json`);
-        this._options = options;
-        this._utils = new Utils(path.join(options.dir, `${options.name}.json`));
+        /**
+         * The options of the database
+         * @type {object}
+         * @private
+         */
+        Object.defineProperty(this, "_options", { value: options });
+        /**
+         * The database utils
+         * @type {Utils}
+         * @private
+         */
+        Object.defineProperty(this, "_utils", { value: new Utils(path.join(options.dir, `${options.name}.json`)) });
     }
 
     /**
      * Returns all data stored in the database
+     * @returns {Promise<DBObject>}
      */
     all() {
         return Promise.resolve(new DBObject(this._utils.getAll(), "/", path.join(this._options.dir, `${this._options.name}.json`)));
@@ -41,6 +52,7 @@ class MeowDB {
      * Creates an element in the database
      * @param {string} id The ID to create
      * @param {*} value The initial value
+     * @returns {Promise<Object>} The created element
      */
     create(id, sValue) {
         if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
@@ -52,6 +64,7 @@ class MeowDB {
     /**
      * Deletes an element from the database
      * @param {string} id The ID of the element
+     * @returns {Promise<Object>} The deleted element
      */
     delete(id) {
         if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
@@ -64,6 +77,7 @@ class MeowDB {
     /**
      * Checks if an element exists in the database
      * @param {string} id The ID to check
+     * @returns {Boolean} If exists
      */
     exists(id) {
         if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
@@ -74,6 +88,7 @@ class MeowDB {
     /**
      * Gets an element of the database
      * @param {string} id The ID of the element
+     * @returns {any} if it's a object returns DBObject, if not it returns the value
      */
     get(id) {
         if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
@@ -86,6 +101,7 @@ class MeowDB {
      * Sets the value of an element in the database
      * @param {string} id The ID of the element
      * @param {*} value The value to be setted
+     * @returns {Object} The value setted
      */
     set(id, value) {
         if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
