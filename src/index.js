@@ -94,7 +94,7 @@ class MeowDB {
         if (!this._utils.validId(id)) return Promise.reject(new DBError("The ID must only include letters, numbers, underscores and dots"));
         let data = this._utils.get(id);
         if (typeof data === "object" && !(data instanceof Array)) return Promise.resolve(new DBObject(data, id, path.join(this._options.dir, `${this._options.name}.json`)));
-        else return Promise.resolve(data);
+        else return data;
     }
 
     /**
