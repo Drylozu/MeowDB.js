@@ -1,25 +1,25 @@
 {
-  "name": "meowdb",
-  "version": "2.0.7",
-  "description": "Database in JSON",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "node example/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Drylotrans/meowdb.git"
-  },
-  "keywords": [
-    "fs",
-    "file system",
-    "database",
-    "db",
-    "json"
-  ],
-  "author": "Drylotrans",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Drylotrans/meowdb/issues"
-  }
+    "name": "meowdb",
+    "version": "2.0.7",
+    "description": "Database in JSON",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "node example/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Drylotrans/meowdb.git"
+    },
+    "keywords": [
+        "fs",
+        "file system",
+        "database",
+        "db",
+        "json"
+    ],
+    "author": "Drylotrans",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Drylotrans/meowdb/issues"
+    }
 }
