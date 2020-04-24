@@ -28,7 +28,7 @@ class DBUtils {
             if (i === (a.length - 1)) {
                 let last = eval(`allData${info}`);
                 if (last && create) return;
-                let readableData = typeof data === "string" ? `"${data}"` : typeof data === "object" && !(data instanceof Array) ? `${JSON.stringify(data)}` : typeof data === "object" && (data instanceof Array) ? `[${data}]` : `${data}`;
+                let readableData = typeof data === "string" ? `"${data}"` : typeof data === "object" && !(data instanceof Array) ? `${JSON.stringify(data)}` : typeof data === "object" && (data instanceof Array) ? require("util").inspect(data, { depth: null }) : `${data}`;
                 eval(`allData${info} = ${readableData}`);
             } else {
                 if (!eval(`allData${info}`)) eval(`allData${info} = {};`);
@@ -37,7 +37,7 @@ class DBUtils {
         fs.writeFileSync(this.file, JSON.stringify(allData));
         return eval(`allData${info}`);
     }
-    
+
     validId(id) {
         if (typeof id !== "string") return false;
         if (id.length < 1) return false;
