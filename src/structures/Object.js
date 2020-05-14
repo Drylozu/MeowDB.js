@@ -1,4 +1,4 @@
-const DBError = require("./Error.js");
+const MeowDBError = require("./Error.js");
 const fs = require("fs");
 
 function validValue(value) {
@@ -6,14 +6,21 @@ function validValue(value) {
     if (typeof value === "number") return true;
     if (typeof value === "object") return true;
     if (typeof value === "boolean") return true;
+    if (typeof value === "undefined") return true;
     return false;
 }
 
-let File;
+function stringifyData(data) {
+    if (typeof data === "string") return `"${data}"`;
+    if (typeof data === "number") return `${data}`;
+    if (typeof data === "object" && !(data instanceof Array)) return `${JSON.stringify(data)}`;
+    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => this.stringifyData(e)).join(",")}]`;
+    return `${data}`;
+}
 
-/**
- * A Object item from a database
- */
+let File, Id;
+
+/** A Object from a database. */
 class MeowDBObject {
     /**
      * Creates an Object but with a method to save data
@@ -22,28 +29,33 @@ class MeowDBObject {
      * @param {string} file The path of the file
      */
     constructor(obj, id, file) {
-        if (id !== "/") this.__id = id;
+        if (id !== "/") Id = id;
         File = file;
         Object.entries(obj).forEach((i) => this[i[0]] = i[1]);
     }
 
+    get __id() {
+        return Id;
+    }
+
     /**
      * Saves the information of the object edited or no
+     * @returns {Object} The data saved
      */
     save() {
         let allData = JSON.parse(fs.readFileSync(File));
         let info = "";
-        if (this.__id) this.__id.split(".").forEach((s) => {
-            info += `["${s}"]`;
-        });
+        if (this.__id)
+            this.__id.split(".").forEach((s) => {
+                info += `["${s}"]`;
+            });
         Object.entries(this).forEach((i) => {
             if (i[0].startsWith("__")) return;
-            if (!validValue(i[1])) return Promise.reject(new DBError("One of the defined values aren't a string, number or an object"));
-            let readableData = typeof i[1] === "string" ? `"${i[1]}"` : typeof i[1] === "object" && !(i[1] instanceof Array) ? `${JSON.stringify(i[1])}` : typeof i[1] === "object" && (i[1] instanceof Array) ? `[${i[1]}]` : `${i[1]}`;
-            eval(`allData${info}["${i[0]}"] = ${readableData};`);
+            if (!validValue(i[1])) return new MeowDBError("One of the defined values aren't a string, number, object, array, undefined or a boolean");
+            eval(`allData${info}["${i[0]}"] = ${stringifyData(i[1])};`);
         });
         fs.writeFileSync(File, JSON.stringify(allData));
-        return Promise.resolve(Object.assign(eval(`allData${info}`), { __id: this.__id }));
+        return eval(`allData${info}`);
     }
 }
 

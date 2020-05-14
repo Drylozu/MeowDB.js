@@ -1,0 +1,10 @@
+# node package manager
+node_modules
+npm-debug.log*
+.npm
+
+# eslint cache
+.eslintcache
+
+# example database
+example/test.json

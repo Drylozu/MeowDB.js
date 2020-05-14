@@ -1,15 +1,21 @@
 {
     "name": "meowdb",
-    "version": "2.0.7",
+    "version": "2.1.0",
     "description": "Database in JSON",
     "main": "src/index.js",
     "scripts": {
+        "eslint": "eslint src/",
         "test": "node example/index.js"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Drylotrans/meowdb.git"
+        "url": "git+https://github.com/Drylotrans/MeowDB.js.git"
     },
+    "devDependencies": {
+        "eslint": "^7.0.0"
+    },
+    "author": "Drylotrans",
+    "license": "MIT",
     "keywords": [
         "fs",
         "file system",
@@ -17,9 +23,7 @@
         "db",
         "json"
     ],
-    "author": "Drylotrans",
-    "license": "MIT",
     "bugs": {
-        "url": "https://github.com/Drylotrans/meowdb/issues"
+        "url": "https://github.com/Drylotrans/MeowDB.js/issues"
     }
 }

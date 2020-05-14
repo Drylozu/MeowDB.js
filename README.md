@@ -1,72 +1,54 @@
-# meowdb
-Database in JSON (Node.JS Library).
+# MeowDB.js
+![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Dependencies](https://img.shields.io/librariesio/release/npm/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb)
 
-**Released v2.0.7**.
+[![NPM](https://nodei.co/npm/meowdb.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/meowdb/)
+
+"Database" in JSON (Node.JS Library).
+
+**Released v2.1.0**.
 
 
 ## Installation
 - `npm install meowdb --save`.
 
+Also available in Ruby! [MeowDB.rb](https://rubygems.org/gems/meowdb)
 
-Example usage:
+
+## Usage
 ```js
-const meowdb = require("meowdb");
-const UsersDB = new meowdb({
+const MeowDB = require("meowdb");
+// Creating/getting a database
+const db = new MeowDB({
     dir: __dirname,
-    name: "usersExampleDatabase"
+    name: "test"
 });
 
-UsersDB.create("0001", {
+// Creating object (only if it doesn't exist)
+let object = db.create("0001", {
     name: "David",
     country: "CO",
     info: "Nothing to show"
-}).then((user) => console.log(`Created user ${user.name}. ${user.name} lives in ${user.country}.`));
-
-UsersDB.get("0001").then((user) => {
-    user.info = "A simple person";
-    user.save().then((newUser) => console.log(`New ${newUser.name} info:`, newUser.info));
 });
+console.log(object);
 
-UsersDB.all().then((users) => {
-    let out = "Users list:";
-    Object.entries(users).forEach((user) => {
-        out += `  - ${user[1].name} (${user[0]})`;
-    });
-    console.log(out);
+// Obtaining an object
+object = db.get("0001");
+console.log(object);
+
+// Listing objects
+object = db.all();
+let temp = "";
+Object.entries(object).forEach((object) => {
+    temp += `   - ${object[1].name} (${object[0]})\n`;
 });
+console.log(temp.trim());
 
-setTimeout(() => {
-    UsersDB.delete("0001").then((user) => console.log(`User ${user.name} deleted from the database`));
-}, 1500);
+// Deleting an object
+object = db.delete("0001");
+console.log(object);
+
+// Average time of execution: 44ms.
 ```
-
-
-## Implementation with `discord.js` or `eris`
-It's very simple set and get info from the database, look this example from how to use it in a Discord Bot:
-```js
-const meowdb = require("meowdb");
-const UsersDB = new meowdb({
-    dir: __dirname,
-    name: "users"
-});
-
-// Event message/messageCreate
-UsersDB.create(message.author.id, {
-    lvl: 0,
-    xp: 0
-}); // Only creates the user if it doesn't exists in the database
-
-UsersDB.get(message.author.id).then((user) => {
-    user.xp += 1.25;
-    if (xp === 10) user.lvl = 1;
-    if (xp === 25) user.lvl = 2;
-    if (xp === 40) user.lvl = 3;
-    if (xp === 65) user.lvl = 4;
-    if (xp === 80) user.lvl = 5;
-    user.save();
-}); // Adds 1.25 of experience to the user and sets the level of the user
-```
-
 
 ## "Documentation"
 - `new MeowDB(options)`
@@ -89,7 +71,7 @@ Creates or gets a database.
 
 
 **Methods**:
-* `create(id, startValue)` - Creates an element in the database with the specified ID and sets it's value.
+* `create(id, initialValue)` - Creates an element in the database with the specified ID and sets it's value.
 * `exists(id)` - Returns true if exists an element with that ID, returns false if not.
 * `get(id)` - Returns the value of the element stored with that ID.
 * `set(id, value)` - Sets the value of an element.

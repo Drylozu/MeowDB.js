@@ -1,29 +1,34 @@
-const meowdb = require("meowdb");
-const UsersDB = new meowdb({
+console.time("MeowDB.js");
+const MeowDB = require("../src/");
+const db = new MeowDB({
     dir: __dirname,
-    name: "usersExampleDatabase"
+    name: "test"
 });
 
-UsersDB.create("0001", {
+console.log("Object creation (only if it doesn't exist)");
+let object = db.create("0001", {
     name: "David",
     country: "CO",
-    info: "Nothing to show",
-    couple: "Mon"
-}).then((user) => console.log(`Created user ${user.name}. ${user.name} lives in ${user.country}. ${user.name} loves ${user.couple} 💕`));
-
-UsersDB.get("0001").then((user) => {
-    user.info = "A simple person";
-    user.save().then((newUser) => console.log(`New ${newUser.name} info:`, newUser.info));
+    info: "Nothing to show"
 });
+console.log(object);
+console.log();
 
-UsersDB.all().then((users) => {
-    let out = "Users list:";
-    Object.entries(users).forEach((user) => {
-        out += `  - ${user[1].name} (${user[0]})`;
-    });
-    console.log(out);
+console.log("Obtaining object");
+object = db.get("0001");
+console.log(object);
+console.log();
+
+console.log("List of objects");
+object = db.all();
+let temp = "";
+Object.entries(object).forEach((object) => {
+    temp += `   - ${object[1].name} (${object[0]})\n`;
 });
+console.log(temp.trim());
+console.log();
 
-setTimeout(() => {
-    UsersDB.delete("0001").then((user) => console.log(`User ${user.name} deleted from the database`));
-}, 1500);
+console.log("Deleting object");
+object = db.delete("0001");
+console.log(object);
+console.timeEnd("MeowDB.js");
