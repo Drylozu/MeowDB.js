@@ -14,21 +14,28 @@ let object = db.create("0001", {
 console.log(object);
 console.log();
 
-console.log("Obtaining object");
+console.log("Obtaining an object");
 object = db.get("0001");
 console.log(object);
+console.log();
+
+console.log("Editing 'name' key and saving");
+process.stdout.write(`${object.name} - `);
+object.name = "Deivid";
+object.save();
+console.log(object.name);
 console.log();
 
 console.log("List of objects");
 object = db.all();
 let temp = "";
-Object.entries(object).forEach((object) => {
-    temp += `   - ${object[1].name} (${object[0]})\n`;
+Object.entries(object).forEach((obj) => {
+    temp += `   - ${obj[1].name} (${obj[0]})\n`;
 });
 console.log(temp.trim());
 console.log();
 
-console.log("Deleting object");
+console.log("Deleting an object");
 object = db.delete("0001");
 console.log(object);
 console.timeEnd("MeowDB.js");
