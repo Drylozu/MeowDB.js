@@ -24,16 +24,20 @@ let File, Id;
 class MeowDBObject {
     /**
      * Creates an Object but with a method to save data
-     * @param {object} obj The object
+     * @param {Object} object The object
      * @param {string} id The ID of the element
      * @param {string} file The path of the file
      */
-    constructor(obj, id, file) {
+    constructor(object, id, file) {
         if (id !== "/") Id = id;
         File = file;
-        Object.entries(obj).forEach((i) => this[i[0]] = i[1]);
+        Object.entries(object).forEach((i) => this[i[0]] = i[1]);
     }
 
+    /**
+     * The ID of the object
+     * @type {string}
+     */
     get __id() {
         return Id;
     }

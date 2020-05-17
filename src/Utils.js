@@ -1,10 +1,19 @@
 const fs = require("fs");
 
-class Utils {
+/** Class that contains every method to parse options or modify data. */
+class MeowDBUtils {
+    /**
+     * @param {string} file - The file that contains the data
+     */
     constructor(file) {
         this.file = file;
     }
     
+    /**
+     * Checks if an ID is valid
+     * @param {string} id - The ID to check
+     * @returns {Boolean} - If it's valid
+     */
     validId(id) {
         if (typeof id !== "string") return false;
         if (id.length < 1) return false;
@@ -14,6 +23,11 @@ class Utils {
         return true;
     }
 
+    /**
+     * Checks if a value is valid to store
+     * @param {any} value - The value to check
+     * @returns {Boolean} - If it's valid
+     */
     validValue(value) {
         if (typeof value === "string") return true;
         if (typeof value === "number") return true;
@@ -23,6 +37,11 @@ class Utils {
         return false;
     }
 
+    /**
+     * Converts any valid data to string
+     * @param {any} data - The data to convert in a string
+     * @returns {string} - The data converted
+     */
     stringifyData(data) {
         if (typeof data === "string") return `"${data}"`;
         if (typeof data === "number") return `${data}`;
@@ -31,10 +50,19 @@ class Utils {
         return `${data}`;
     }
 
+    /**
+     * Returns all the data stored
+     * @returns {Object} - The data
+     */
     getAll() {
         return JSON.parse(fs.readFileSync(this.file));
     }
 
+    /**
+     * Gets an element stored
+     * @param {string} id - The ID of the element to get
+     * @returns {any} - The element
+     */
     get(id) {
         let allData = this.getAll(); // eslint-disable-line no-unused-vars
         let info = "";
@@ -46,6 +74,13 @@ class Utils {
         return eval(`allData${info}`);
     }
 
+    /**
+     * Sets an element and stores it
+     * @param {string} id - The ID of the element to set
+     * @param {any} data - The value of the element
+     * @param {Boolean} create - If it's in creation mode
+     * @returns {Object} - The element
+     */
     set(id, data, create = false) {
         let allData = this.getAll();
         let info = "";
@@ -64,4 +99,4 @@ class Utils {
     }
 }
 
-module.exports = Utils;
+module.exports = MeowDBUtils;

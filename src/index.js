@@ -1,16 +1,28 @@
 const MeowDBObject = require("./structures/Object.js");
 const MeowDBError = require("./structures/Error.js");
-const Utils = require("./Utils.js");
+const MeowDBUtils = require("./Utils.js");
 const path = require("path");
 const fs = require("fs");
+
+/**
+ * MeowDB options object used to create the database
+ * @typedef {Object} MeowDBOptions
+ * @property {string} dir - The directory path of the database
+ * @property {string} name - The name of the database
+ */
+
+/**
+ * Private MeowDB options inside the MeowDB class
+ * @typedef {MeowDBOptions} MeowDBPrivateOptions
+ * @property {string} file - The absolute path of the database file
+ */
 
 /** Class representing a database. */
 class MeowDB {
     /**
      * Create or get a database.
-     * @param {object} options - The options of the database
-     * @param {string} options.dir - The directory path of the database
-     * @param {string} options.name - The name of the database
+     * @param {MeowDBOptions} options - MeowDB options object
+     * @throws {MeowDBError} If any value is invalid
      */
     constructor(options = {}) {
         if (!options) throw new MeowDBError("The options are required");
@@ -25,17 +37,17 @@ class MeowDB {
 
         /**
          * The options of the database
-         * @type {Object}
+         * @type {MeowDBOptions}
          * @private
          */
         Object.defineProperty(this, "_options", { value: { ...options, file: path.join(options.dir, `${options.name}.json`) } });
 
         /**
          * The database utils
-         * @type {Utils}
+         * @type {MeowDBUtils}
          * @private
          */
-        Object.defineProperty(this, "_utils", { value: new Utils(this._options.file) });
+        Object.defineProperty(this, "_utils", { value: new MeowDBUtils(this._options.file) });
 
         if (!fs.existsSync(this._options.file)) fs.writeFileSync(this._options.file, "{}");
     }
@@ -50,9 +62,9 @@ class MeowDB {
 
     /**
      * Creates an element in the database (only if it doesn't exists already)
-     * @param {string} id The ID to create
-     * @param {*} initialValue The initial value
-     * @returns {Object} The created element
+     * @param {string} id - The ID to create
+     * @param {*} initialValue - The initial value
+     * @returns {MeowDBError|Object} - The created element
      */
     create(id, initialValue) {
         if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
@@ -63,8 +75,8 @@ class MeowDB {
 
     /**
      * Deletes an element from the database
-     * @param {string} id The ID of the element
-     * @returns {Object} The deleted object
+     * @param {string} id - The ID of the element
+     * @returns {MeowDBError|Object} - The deleted object
      */
     delete(id) {
         if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
@@ -76,8 +88,8 @@ class MeowDB {
 
     /**
      * Checks if an element exists in the database
-     * @param {string} id The ID to check
-     * @returns {Boolean} If exists
+     * @param {string} id - The ID to check
+     * @returns {MeowDBError|Boolean} - If it exists
      */
     exists(id) {
         if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
@@ -86,8 +98,8 @@ class MeowDB {
 
     /**
      * Gets an element of the database
-     * @param {string} id The ID of the element
-     * @returns {any} The element
+     * @param {string} id - The ID of the element
+     * @returns {*} - The element
      */
     get(id) {
         if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
@@ -98,9 +110,9 @@ class MeowDB {
 
     /**
      * Sets the value of an element in the database
-     * @param {string} id The ID of the element
-     * @param {*} value The value to be setted
-     * @returns {Object} The value setted
+     * @param {string} id - The ID of the element
+     * @param {*} value - The value to be setted
+     * @returns {MeowDBError|Object} - The value setted
      */
     set(id, value) {
         if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");

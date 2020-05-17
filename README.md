@@ -1,11 +1,13 @@
 # MeowDB.js
-![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Dependencies](https://img.shields.io/librariesio/release/npm/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb)
+![MeowDB](https://i.imgur.com/ZN6PLil.png)
+
+![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Dependencies](https://img.shields.io/librariesio/release/npm/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylotrans/MeowDB.js) ![Last Version](https://img.shields.io/github/package-json/v/Drylotrans/MeowDB.js) ![Last Version Published](https://img.shields.io/npm/v/meowdb)
 
 [![NPM](https://nodei.co/npm/meowdb.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/meowdb/)
 
 "Database" in JSON (Node.JS Library).
 
-**Released v2.1.0**.
+**Released v2.1.1**.
 
 
 ## Installation
@@ -15,36 +17,62 @@ Also available in Ruby! [MeowDB.rb](https://rubygems.org/gems/meowdb)
 
 
 ## Usage
+<details>
+<summary>JavaScript - Node.js require</summary>
+
 ```js
 const MeowDB = require("meowdb");
-// Creating/getting a database
-const db = new MeowDB({
-    dir: __dirname,
-    name: "test"
-});
 
+const myDatabase = new MeowDB({
+    dir: __dirname,
+    name: "databae"
+});
+```
+
+</details>
+
+<details>
+<summary>TypeScript import</summary>
+
+```ts
+import MeowDB from "meowdb";
+
+const myDatabase: MeowDB = new MeowDB({
+    dir: __dirname,
+    name: "databae"
+});
+```
+
+</details>
+
+```js
 // Creating object (only if it doesn't exist)
-let object = db.create("0001", {
+let object = myDatabase.create("0001", {
     name: "David",
     country: "CO",
     info: "Nothing to show"
 });
 console.log(object);
 
+// Modifing an object and saving it
+object.name = "Deivid";
+object.save();
+console.log(object);
+
 // Obtaining an object
-object = db.get("0001");
+object = myDatabase.get("0001");
 console.log(object);
 
 // Listing objects
-object = db.all();
+object = myDatabase.all();
 let temp = "";
-Object.entries(object).forEach((object) => {
-    temp += `   - ${object[1].name} (${object[0]})\n`;
+Object.entries(object).forEach((user) => {
+    temp += `   - ${user[1].name} (ID: ${user[0]})\n`;
 });
 console.log(temp.trim());
 
 // Deleting an object
-object = db.delete("0001");
+object = myDatabase.delete("0001");
 console.log(object);
 
 // Average time of execution: 44ms.

@@ -8,3 +8,6 @@ npm-debug.log*
 
 # example database
 example/test.json
+
+# TypeScript cache
+*.tsbuildinfo

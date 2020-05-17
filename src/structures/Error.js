@@ -6,7 +6,16 @@ class MeowDBError extends Error {
      */
     constructor(msg = "Unknown error") {
         super();
+        /**
+         * The name of the error
+         * @type {string}
+         */
         this.name = "MeowDB";
+
+        /**
+         * The message of the error
+         * @type {string}
+         */
         this.message = msg;
     }
 }

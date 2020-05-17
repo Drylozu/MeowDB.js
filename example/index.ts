@@ -1,14 +1,14 @@
 console.time("MeowDB.js");
 
-const MeowDB = require("../");
+import MeowDB from "../";
 
-const db = new MeowDB({
+const db: MeowDB = new MeowDB({
     dir: __dirname,
     name: "test"
 });
 
 console.log("Object creation (only if it doesn't exist)");
-let object = db.create("0001", {
+let object: any = db.create("0001", {
     name: "David",
     country: "CO",
     info: "Nothing to show"
@@ -31,7 +31,7 @@ console.log();
 console.log("List of objects");
 object = db.all();
 let temp = "";
-Object.entries(object).forEach((obj) => {
+Object.entries(object).forEach((obj: [string, any]) => {
     temp += `   - ${obj[1].name} (${obj[0]})\n`;
 });
 console.log(temp.trim());
