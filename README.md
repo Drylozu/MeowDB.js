@@ -25,7 +25,7 @@ const MeowDB = require("meowdb");
 
 const myDatabase = new MeowDB({
     dir: __dirname,
-    name: "databae"
+    name: "database"
 });
 ```
 
@@ -39,7 +39,7 @@ import MeowDB from "meowdb";
 
 const myDatabase: MeowDB = new MeowDB({
     dir: __dirname,
-    name: "databae"
+    name: "database"
 });
 ```
 
