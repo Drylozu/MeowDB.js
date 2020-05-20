@@ -7,7 +7,7 @@
 
 "Database" in JSON (Node.JS Library).
 
-**Released v2.1.1**.
+**Released v2.1.1**. See [CHANGELOG](https://github.com/Drylotrans/MeowDB.js/blob/master/CHANGELOG.md).
 
 
 ## Installation
@@ -53,7 +53,7 @@ console.log(object);
 // Modifying an object and saving it
 object.name = "Deivid";
 object.save();
-console.log(object);
+console.log(object.name);
 
 // Setting directly the value of an element
 object = myDatabase.set("0001.info", "Just a person");
