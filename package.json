@@ -5,7 +5,7 @@
     "main": "./src/index.js",
     "types": "./index.d.ts",
     "scripts": {
-        "eslint": "eslint src/",
+        "eslint": "eslint src/ example/",
         "test": "node example/index.js",
         "test:ts": "ts-node example/index.ts"
     },
@@ -16,10 +16,10 @@
         "url": "git+https://github.com/Drylotrans/MeowDB.js.git"
     },
     "devDependencies": {
-        "@types/node": "^14.0.1",
+        "@types/node": "^14.0.4",
         "eslint": "^7.0.0",
         "ts-node": "^8.10.1",
-        "typescript": "^3.9.2"
+        "typescript": "^3.9.3"
     },
     "keywords": [
         "fs",

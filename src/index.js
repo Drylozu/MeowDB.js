@@ -22,7 +22,7 @@ class MeowDB {
     /**
      * Create or get a database.
      * @param {MeowDBOptions} options - MeowDB options object
-     * @throws {MeowDBError} If any value is invalid
+     * @throws {MeowDBError} - If any value is invalid
      */
     constructor(options = {}) {
         if (!options) throw new MeowDBError("The options are required");
@@ -37,7 +37,7 @@ class MeowDB {
 
         /**
          * The options of the database
-         * @type {MeowDBOptions}
+         * @type {MeowDBPrivateOptions}
          * @private
          */
         Object.defineProperty(this, "_options", { value: { ...options, file: path.join(options.dir, `${options.name}.json`) } });
@@ -70,7 +70,7 @@ class MeowDB {
         if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
         if (!this._utils.validValue(initialValue)) return new MeowDBError("The value must be a string, number or an object");
         if (this._utils.get(id)) return this._utils.get(id);
-        return Object.assign(this._utils.set(id, initialValue, true), { __id: id });
+        return this._utils.set(id, initialValue, true);
     }
 
     /**
@@ -83,7 +83,7 @@ class MeowDB {
         let tmpData = this._utils.get(id);
         if (!tmpData) return new MeowDBError("That element doesn't exists in the database");
         this._utils.set(id, undefined, false);
-        return Object.assign(tmpData, { __id: id });
+        return tmpData;
     }
 
     /**

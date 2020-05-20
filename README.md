@@ -1,5 +1,5 @@
 # MeowDB.js
-![MeowDB](https://i.imgur.com/ZN6PLil.png)
+![MeowDB](https://i.imgur.com/cC7AZ18.png)
 
 ![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Dependencies](https://img.shields.io/librariesio/release/npm/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylotrans/MeowDB.js) ![Last Version](https://img.shields.io/github/package-json/v/Drylotrans/MeowDB.js) ![Last Version Published](https://img.shields.io/npm/v/meowdb)
 
@@ -17,9 +17,7 @@ Also available in Ruby! [MeowDB.rb](https://rubygems.org/gems/meowdb)
 
 
 ## Usage
-<details>
-<summary>JavaScript - Node.js require</summary>
-
+**JavaScript - Node.js require**
 ```js
 const MeowDB = require("meowdb");
 
@@ -29,11 +27,7 @@ const myDatabase = new MeowDB({
 });
 ```
 
-</details>
-
-<details>
-<summary>TypeScript import</summary>
-
+**TypeScript import**
 ```ts
 import MeowDB from "meowdb";
 
@@ -42,8 +36,6 @@ const myDatabase: MeowDB = new MeowDB({
     name: "database"
 });
 ```
-
-</details>
 
 ```js
 // Creating object (only if it doesn't exist)
@@ -54,13 +46,17 @@ let object = myDatabase.create("0001", {
 });
 console.log(object);
 
-// Modifing an object and saving it
+// Obtaining an object
+object = myDatabase.get("0001");
+console.log(object);
+
+// Modifying an object and saving it
 object.name = "Deivid";
 object.save();
 console.log(object);
 
-// Obtaining an object
-object = myDatabase.get("0001");
+// Setting directly the value of an element
+object = myDatabase.set("0001.info", "Just a person");
 console.log(object);
 
 // Listing objects
@@ -94,7 +90,7 @@ Creates or gets a database.
 
 **Parameters**:
 * `options` - An object with the options
-    * `options.dir` - A string indicating the   directory that will have the database
+    * `options.dir` - A string indicating the directory that will have the database (must be an absolute path)
     * `options.name` - A string with the name of the database
 
 

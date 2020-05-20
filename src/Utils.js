@@ -3,7 +3,7 @@ const fs = require("fs");
 /** Class that contains every method to parse options or modify data. */
 class MeowDBUtils {
     /**
-     * @param {string} file - The file that contains the data
+     * @param {string} file The file that contains the data
      */
     constructor(file) {
         this.file = file;
@@ -11,8 +11,8 @@ class MeowDBUtils {
     
     /**
      * Checks if an ID is valid
-     * @param {string} id - The ID to check
-     * @returns {Boolean} - If it's valid
+     * @param {string} id The ID to check
+     * @returns {Boolean} If it's valid
      */
     validId(id) {
         if (typeof id !== "string") return false;
@@ -25,8 +25,8 @@ class MeowDBUtils {
 
     /**
      * Checks if a value is valid to store
-     * @param {any} value - The value to check
-     * @returns {Boolean} - If it's valid
+     * @param {any} value The value to check
+     * @returns {Boolean} If it's valid
      */
     validValue(value) {
         if (typeof value === "string") return true;
@@ -39,8 +39,8 @@ class MeowDBUtils {
 
     /**
      * Converts any valid data to string
-     * @param {any} data - The data to convert in a string
-     * @returns {string} - The data converted
+     * @param {any} data The data to convert in a string
+     * @returns {string} The data converted
      */
     stringifyData(data) {
         if (typeof data === "string") return `"${data}"`;
@@ -52,7 +52,7 @@ class MeowDBUtils {
 
     /**
      * Returns all the data stored
-     * @returns {Object} - The data
+     * @returns {Object} The data
      */
     getAll() {
         return JSON.parse(fs.readFileSync(this.file));
@@ -60,8 +60,8 @@ class MeowDBUtils {
 
     /**
      * Gets an element stored
-     * @param {string} id - The ID of the element to get
-     * @returns {any} - The element
+     * @param {string} id The ID of the element to get
+     * @returns {any} The element
      */
     get(id) {
         let allData = this.getAll(); // eslint-disable-line no-unused-vars
@@ -76,10 +76,10 @@ class MeowDBUtils {
 
     /**
      * Sets an element and stores it
-     * @param {string} id - The ID of the element to set
-     * @param {any} data - The value of the element
-     * @param {Boolean} create - If it's in creation mode
-     * @returns {Object} - The element
+     * @param {string} id The ID of the element to set
+     * @param {any} data The value of the element
+     * @param {Boolean} create If it's in creation mode
+     * @returns {Object} The new value
      */
     set(id, data, create = false) {
         let allData = this.getAll();
