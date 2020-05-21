@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.1.3 - Better errors
+- MeowDB functions don't returns an error now.
+- MeowDB functions throws an error now.
+- MeowDBObject now uses `Object.assign`.
+- Removed `-` in JSDocs.
+- Updated version in README
+
 ## 2.1.2 - JSDocs
 - Added JSDoc in TS declaration file.
 - Added CHANGELOG file.

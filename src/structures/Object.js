@@ -31,7 +31,7 @@ class MeowDBObject {
     constructor(object, id, file) {
         if (id !== "/") Id = id;
         File = file;
-        Object.entries(object).forEach((i) => this[i[0]] = i[1]);
+        Object.assign(this, object);
     }
 
     /**
@@ -45,6 +45,7 @@ class MeowDBObject {
     /**
      * Saves the information of the object edited or no
      * @returns {Object} The data saved
+     * @throws {MeowDBError} If any value is invalid
      */
     save() {
         let allData = JSON.parse(fs.readFileSync(File));
@@ -55,7 +56,7 @@ class MeowDBObject {
             });
         Object.entries(this).forEach((i) => {
             if (i[0].startsWith("__")) return;
-            if (!validValue(i[1])) return new MeowDBError("One of the defined values aren't a string, number, object, array, undefined or a boolean");
+            if (!validValue(i[1])) throw new MeowDBError("One of the defined values aren't a string, number, object, array, undefined or a boolean");
             eval(`allData${info}["${i[0]}"] = ${stringifyData(i[1])};`);
         });
         fs.writeFileSync(File, JSON.stringify(allData));

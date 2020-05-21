@@ -133,28 +133,32 @@ declare class MeowDB {
      * Creates an element in the database (only if it doesn't exists already)
      * @param {string} id The ID to create
      * @param {*} initialValue The initial value
-     * @returns {MeowDBError|Object} The created element
+     * @returns {*} The created element
+     * @throws {MeowDBError} If the ID or initial value are invalid
      */
-    public create(id: string, initialValue: any): MeowDBError | Object;
+    public create(id: string, initialValue: any): any;
 
     /**
      * Deletes an element from the database
      * @param {string} id The ID of the element
-     * @returns {MeowDBError|Object} The deleted object
+     * @returns {*} The deleted element
+     * @throws {MeowDBError} If the ID is invalid or the element doesn't exists
      */
-    public delete(id: string): MeowDBError | Object;
+    public delete(id: string): any;
 
     /**
      * Checks if an element exists in the database
      * @param {string} id The ID to check
-     * @returns {MeowDBError|Boolean} If it exists
+     * @returns {Boolean} If it exists
+     * @throws {MeowDBError} If the ID is invalid
      */
-    public exists(id: string): MeowDBError | Boolean;
+    public exists(id: string): Boolean;
 
     /**
      * Gets an element of the database
      * @param {string} id The ID of the element
      * @returns {*} The element
+     * @throws {MeowDBError} If the ID is invalid
      */
     public get(id: string): any;
 
@@ -162,9 +166,10 @@ declare class MeowDB {
      * Sets the value of an element in the database
      * @param {string} id The ID of the element
      * @param {*} value The value to be setted
-     * @returns {MeowDBError|Object} The value setted
+     * @returns {*} The value setted
+     * @throws {MeowDBError} If the ID or value is invalid
      */
-    public set(id: string, value: any): MeowDBError | Object;
+    public set(id: string, value: any): any;
 }
 
 export = MeowDB;

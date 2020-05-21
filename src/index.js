@@ -7,22 +7,22 @@ const fs = require("fs");
 /**
  * MeowDB options object used to create the database
  * @typedef {Object} MeowDBOptions
- * @property {string} dir - The directory path of the database
- * @property {string} name - The name of the database
+ * @property {string} dir The directory path of the database
+ * @property {string} name The name of the database
  */
 
 /**
  * Private MeowDB options inside the MeowDB class
  * @typedef {MeowDBOptions} MeowDBPrivateOptions
- * @property {string} file - The absolute path of the database file
+ * @property {string} file The absolute path of the database file
  */
 
 /** Class representing a database. */
 class MeowDB {
     /**
      * Create or get a database.
-     * @param {MeowDBOptions} options - MeowDB options object
-     * @throws {MeowDBError} - If any value is invalid
+     * @param {MeowDBOptions} options MeowDB options object
+     * @throws {MeowDBError} If any value is invalid
      */
     constructor(options = {}) {
         if (!options) throw new MeowDBError("The options are required");
@@ -62,47 +62,51 @@ class MeowDB {
 
     /**
      * Creates an element in the database (only if it doesn't exists already)
-     * @param {string} id - The ID to create
-     * @param {*} initialValue - The initial value
-     * @returns {MeowDBError|Object} - The created element
+     * @param {string} id The ID to create
+     * @param {*} initialValue The initial value
+     * @returns {Object} The created element
+     * @throws {MeowDBError} If the ID or initial value is invalid
      */
     create(id, initialValue) {
-        if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
-        if (!this._utils.validValue(initialValue)) return new MeowDBError("The value must be a string, number or an object");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validValue(initialValue)) throw new MeowDBError("The value must be a string, number or an object");
         if (this._utils.get(id)) return this._utils.get(id);
         return this._utils.set(id, initialValue, true);
     }
 
     /**
      * Deletes an element from the database
-     * @param {string} id - The ID of the element
-     * @returns {MeowDBError|Object} - The deleted object
+     * @param {string} id The ID of the element
+     * @returns {Object} The deleted object
+     * @throws {MeowDBError} If the ID is invalid or the element doesn't exists
      */
     delete(id) {
-        if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
         let tmpData = this._utils.get(id);
-        if (!tmpData) return new MeowDBError("That element doesn't exists in the database");
+        if (!tmpData) throw new MeowDBError("That element doesn't exists in the database");
         this._utils.set(id, undefined, false);
         return tmpData;
     }
 
     /**
      * Checks if an element exists in the database
-     * @param {string} id - The ID to check
-     * @returns {MeowDBError|Boolean} - If it exists
+     * @param {string} id The ID to check
+     * @returns {Boolean} If it exists
+     * @throws {MeowDBError} If the ID is invalid
      */
     exists(id) {
-        if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
         return Boolean(this._utils.get(id));
     }
 
     /**
      * Gets an element of the database
-     * @param {string} id - The ID of the element
-     * @returns {*} - The element
+     * @param {string} id The ID of the element
+     * @returns {*} The element
+     * @throws {MeowDBError} If the ID is invalid
      */
     get(id) {
-        if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
         let data = this._utils.get(id);
         if (typeof data === "object" && !(data instanceof Array)) return new MeowDBObject(data, id, this._options.file);
         else return data;
@@ -110,13 +114,14 @@ class MeowDB {
 
     /**
      * Sets the value of an element in the database
-     * @param {string} id - The ID of the element
-     * @param {*} value - The value to be setted
-     * @returns {MeowDBError|Object} - The value setted
+     * @param {string} id The ID of the element
+     * @param {*} value The value to be setted
+     * @returns {*} The value setted
+     * @throws {MeowDBError} If the ID or value is invalid
      */
     set(id, value) {
-        if (!this._utils.validId(id)) return new MeowDBError("The ID must only include letters, numbers, underscores and dots");
-        if (!this._utils.validValue(value)) return new MeowDBError("The value must be a string, number or an object");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validValue(value)) throw new MeowDBError("The value must be a string, number or an object");
         return this._utils.set(id, value, false);
     }
 }
