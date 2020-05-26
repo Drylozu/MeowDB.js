@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.1.4 - Error fixed
+- `push` in an array (MeowDBObject property) works now.
+
 ## 2.1.3 - Better errors
 - MeowDB functions don't returns an error now.
 - MeowDB functions throws an error now.

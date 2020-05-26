@@ -7,7 +7,7 @@
 
 "Database" in JSON (Node.JS Library).
 
-**Released v2.1.3**. See [CHANGELOG](https://github.com/Drylotrans/MeowDB.js/blob/master/CHANGELOG.md).
+**Released v2.1.4**. See [CHANGELOG](https://github.com/Drylotrans/MeowDB.js/blob/master/CHANGELOG.md).
 
 
 ## Installation

@@ -14,7 +14,7 @@ function stringifyData(data) {
     if (typeof data === "string") return `"${data}"`;
     if (typeof data === "number") return `${data}`;
     if (typeof data === "object" && !(data instanceof Array)) return `${JSON.stringify(data)}`;
-    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => this.stringifyData(e)).join(",")}]`;
+    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => stringifyData(e)).join(",")}]`;
     return `${data}`;
 }
 
