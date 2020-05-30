@@ -170,6 +170,16 @@ declare class MeowDB {
      * @throws {MeowDBError} If the ID or value is invalid
      */
     public set(id: string, value: any): any;
+
+    
+    /**
+     * Finds an element in the database
+     * @param {function} callback The function to check elements
+     * @param {string} id The ID to start checking
+     * @returns {*} The element
+     * @throws {MeowDBError} If the ID or callback is invalid
+     */
+    public find(callback: Function, id?: string): any;
 }
 
 export = MeowDB;

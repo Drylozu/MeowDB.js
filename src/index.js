@@ -54,7 +54,7 @@ class MeowDB {
 
     /**
      * Returns all data stored in the database
-     * @returns {MeowDBObject}
+     * @returns {MeowDBObject} All data
      */
     all() {
         return new MeowDBObject(this._utils.getAll(), "/", this._options.file);
@@ -82,10 +82,10 @@ class MeowDB {
      */
     delete(id) {
         if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
-        let tmpData = this._utils.get(id);
-        if (!tmpData) throw new MeowDBError("That element doesn't exists in the database");
+        let data = this._utils.get(id);
+        if (!data) throw new MeowDBError("That element doesn't exists in the database");
         this._utils.set(id, undefined, false);
-        return tmpData;
+        return data;
     }
 
     /**
@@ -123,6 +123,24 @@ class MeowDB {
         if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
         if (!this._utils.validValue(value)) throw new MeowDBError("The value must be a string, number or an object");
         return this._utils.set(id, value, false);
+    }
+
+    /**
+     * Finds an element in the database
+     * @param {function} callback The function to check elements
+     * @param {string} id The ID to start checking
+     * @returns {*} The element
+     * @throws {MeowDBError} If the ID or callback is invalid
+     */
+    find(callback, id = "/") {
+        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
+        let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
+        if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
+        let element = Object.entries(data).find(([_, e]) => callback(e));
+        if (!element || !element[0]) return undefined;
+        if (typeof element[1] === "object" && !(element[1] instanceof Array)) return new MeowDBObject(element[1], element[0], this._options.file);
+        else return element[1];
     }
 }
 

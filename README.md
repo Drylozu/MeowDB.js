@@ -1,7 +1,7 @@
 # MeowDB.js
 ![MeowDB](https://i.imgur.com/cC7AZ18.png)
 
-![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Dependencies](https://img.shields.io/librariesio/release/npm/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylotrans/MeowDB.js) ![Last Version](https://img.shields.io/github/package-json/v/Drylotrans/MeowDB.js) ![Last Version Published](https://img.shields.io/npm/v/meowdb)
+![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Dependencies](https://img.shields.io/librariesio/release/npm/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylotrans/MeowDB.js) ![Last Version Published](https://img.shields.io/npm/v/meowdb)
 
 [![NPM](https://nodei.co/npm/meowdb.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/meowdb/)
 
@@ -39,15 +39,14 @@ const myDatabase: MeowDB = new MeowDB({
 
 ```js
 // Creating object (only if it doesn't exist)
-let object = myDatabase.create("0001", {
+console.log(myDatabase.create("0001", {
     name: "David",
     country: "CO",
     info: "Nothing to show"
-});
-console.log(object);
+}));
 
 // Obtaining an object
-object = myDatabase.get("0001");
+let object = myDatabase.get("0001");
 console.log(object);
 
 // Modifying an object and saving it
@@ -56,48 +55,95 @@ object.save();
 console.log(object.name);
 
 // Setting directly the value of an element
-object = myDatabase.set("0001.info", "Just a person");
-console.log(object);
+console.log(myDatabase.set("0001.info", "Just a person"));
 
-// Listing objects
-object = myDatabase.all();
+// Listing all objects
 let temp = "";
-Object.entries(object).forEach((user) => {
+Object.entries(myDatabase.all()).forEach((user) => {
     temp += `   - ${user[1].name} (ID: ${user[0]})\n`;
 });
-console.log(temp.trim());
+console.log(temp.trimRight());
+
+// Finding an object
+console.log(myDatabase.find((user) => user.name === "Deivid"));
 
 // Deleting an object
-object = myDatabase.delete("0001");
-console.log(object);
-
-// Average time of execution: 44ms.
+console.log(myDatabase.delete("0001"));
 ```
 
 ## "Documentation"
 - `new MeowDB(options)`
-    * `create(id, startValue)`
+    * `create(id, initialValue)`
     * `exists(id)`
     * `get(id)`
     * `set(id, value)`
     * `all()`
     * `delete(id)`
+    * `find(callback, id?)`
 
 
-
-### new MeowDB(options)
-Creates or gets a database.
+## new MeowDB(options)
+Creates or gets a database
 
 **Parameters**:
 * `options` - An object with the options
     * `options.dir` - A string indicating the directory that will have the database (must be an absolute path)
     * `options.name` - A string with the name of the database
 
+### Methods
+#### `all()`
+Returns all data stored in the database
 
-**Methods**:
-* `create(id, initialValue)` - Creates an element in the database with the specified ID and sets it's value.
-* `exists(id)` - Returns true if exists an element with that ID, returns false if not.
-* `get(id)` - Returns the value of the element stored with that ID.
-* `set(id, value)` - Sets the value of an element.
-* `all()` - Returns all objects stored in the database.
-* `delete(id)` - Deletes an element from the database.
+**Returns**: `MeowDBObject` - All data
+
+
+#### `create(id, initialValue)`
+Creates an element in the database with the specified ID and sets it's value
+
+**Parameters**:
+* `id` - A string representing the ID of the element to create
+* `initialValue` - The initial value of the element
+
+**Returns**: `Object` - The created element
+
+**Throws**: `MeowDBError` - If the ID or initialValue is invalid
+
+
+#### `delete(id)`
+Deletes an element from the database
+
+**Returns**: `Object` - The deleted element
+
+**Throws**: `MeowDBError` - If the ID is invalid
+
+
+#### `exists(id)`
+Checks if an element exists in the database
+
+**Returns**: `Boolean` - If it exists
+
+**Throws**: `MeowDBError` - If the ID is invalid
+
+
+#### `get(id)`
+Gets an element of the database
+
+**Returns**: `*` - The element
+
+**Throws**: `MeowDBError` - If the ID is invalid
+
+
+#### `set(id, value)`
+Sets the value of an element in the database
+
+**Returns**: `*` - The value setted
+
+**Throws**: `MeowDBError` - If the ID or value is invalid
+
+
+#### `find(callback, id?)`
+Finds an element in the database
+
+**Returns**: `*` - The element
+
+**Throws**: `MeowDBError` - If the ID or callback is invalid
