@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Not Published
+- Added `find` and `filter` functions
+- `README.md` more beautiful
+- ~~`create` function now adds nonexisting properties~~
+
 ## 2.1.4 - Error fixed
 - `push` in an array (MeowDBObject property) works now.
 

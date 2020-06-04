@@ -37,6 +37,7 @@ const myDatabase: MeowDB = new MeowDB({
 });
 ```
 
+**Example of all functions**
 ```js
 // Creating object (only if it doesn't exist)
 console.log(myDatabase.create("0001", {
@@ -67,27 +68,33 @@ console.log(temp.trimRight());
 // Finding an object
 console.log(myDatabase.find((user) => user.name === "Deivid"));
 
+// Filtering objects
+console.log(myDatabase.filter((user) => user.country === "CO"));
+
 // Deleting an object
 console.log(myDatabase.delete("0001"));
 ```
 
 ## "Documentation"
-- `new MeowDB(options)`
-    * `create(id, initialValue)`
-    * `exists(id)`
-    * `get(id)`
-    * `set(id, value)`
-    * `all()`
-    * `delete(id)`
-    * `find(callback, id?)`
+- [`new MeowDB(options)`](#new-meowdboptions)
+    - `create(id, initialValue)`
+    - `exists(id)`
+    - `get(id)`
+    - `set(id, value)`
+    - `all()`
+    - `delete(id)`
+    - `find(callback, id?)`
+    - `filter(callback, id?)`
+- [`MeowDBError`](#meowdberror)
 
 
 ## new MeowDB(options)
 Creates or gets a database
 - **Parameters**:
     - `options` - An object with the options
-        - `options.dir` - A string indicating the directory that will have the database (must be an absolute path)
+        - `options.dir` - A string indicating the directory that will have the database (must be an absolute path - the folder should be created)
         - `options.name` - A string with the name of the database
+- **Throws**: [`MeowDBError`](#meowdberror) - If any option is invalid
 
 
 ### Methods
@@ -102,7 +109,7 @@ Creates an element in the database with the specified ID and sets it's value
     - `id` - A string representing the ID of the element to create
     - `initialValue` - The initial value of the element
 - **Returns**: `Object` - The created element
-- **Throws**: `MeowDBError` - If the ID or initialValue is invalid
+- **Throws**: [`MeowDBError`](#meowdberror) - If the ID or initialValue is invalid
 <hr>
 
 #### `delete(id)`
@@ -110,7 +117,7 @@ Deletes an element from the database
 - **Parameters**:
     - `id` - A string representing the ID of the element to delete
 - **Returns**: `Object` - The deleted element
-- **Throws**: `MeowDBError` - If the ID is invalid
+- **Throws**: [`MeowDBError`](#meowdberror) - If the ID is invalid
 <hr>
 
 #### `exists(id)`
@@ -118,7 +125,7 @@ Checks if an element exists in the database
 - **Parameters**:
     - `id` - A string representing the ID of the element to check
 - **Returns**: `Boolean` - If it exists
-- **Throws**: `MeowDBError` - If the ID is invalid
+- **Throws**: [`MeowDBError`](#meowdberror) - If the ID is invalid
 <hr>
 
 #### `get(id)`
@@ -126,7 +133,7 @@ Gets an element of the database
 - **Parameters**:
     - `id` - A string representing the ID of the element to get
 - **Returns**: `*` - The element
-- **Throws**: `MeowDBError` - If the ID is invalid
+- **Throws**: [`MeowDBError`](#meowdberror) - If the ID is invalid
 <hr>
 
 #### `set(id, value)`
@@ -135,7 +142,7 @@ Sets the value of an element in the database
     - `id` - A string representing the ID of the element to update
     - `value` - The new value of the element
 - **Returns**: `*` - The value setted
-- **Throws**: `MeowDBError` - If the ID or value is invalid
+- **Throws**: [`MeowDBError`](#meowdberror) - If the ID or value is invalid
 <hr>
 
 #### `find(callback, id?)`
@@ -144,7 +151,7 @@ You __should only__ use this function if you're finding for objects
 - **Parameters**:
     - `id` - A string representing the ID of the root element to find another elements
 - **Returns**: `*` - The element
-- **Throws**: `MeowDBError` - If the ID or callback is invalid
+- **Throws**: [`MeowDBError`](#meowdberror) - If the ID or callback is invalid
 <hr>
 
 #### `filter(callback, id?)`
@@ -153,4 +160,8 @@ You __should only__ use this function if you're filtering for objects
 - **Parameters**:
     - `id` - A string representing the ID of the root element to find another elements
 - **Returns**: `*` - The elements (MeowDBObject[] if they're objects, array with ID and value if not)
-- **Throws**: `MeowDBError` - If the ID or callback is invalid
+- **Throws**: [`MeowDBError`](#meowdberror) - If the ID or callback is invalid
+
+
+## MeowDBError
+Extends [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error), only used for error reference.
