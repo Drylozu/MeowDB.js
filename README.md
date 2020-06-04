@@ -84,18 +84,17 @@ console.log(myDatabase.delete("0001"));
 
 ## new MeowDB(options)
 Creates or gets a database
-
-**Parameters**:
-* `options` - An object with the options
-    * `options.dir` - A string indicating the directory that will have the database (must be an absolute path)
-    * `options.name` - A string with the name of the database
+- **Parameters**:
+    - `options` - An object with the options
+        - `options.dir` - A string indicating the directory that will have the database (must be an absolute path)
+        - `options.name` - A string with the name of the database
+<hr>
 
 ### Methods
 #### `all()`
 Returns all data stored in the database
-
-**Returns**: `MeowDBObject` - All data
-
+- **Returns**: `MeowDBObject` - All data
+<hr>
 
 #### `create(id, initialValue)`
 Creates an element in the database with the specified ID and sets it's value
@@ -104,7 +103,7 @@ Creates an element in the database with the specified ID and sets it's value
     - `initialValue` - The initial value of the element
 - **Returns**: `Object` - The created element
 - **Throws**: `MeowDBError` - If the ID or initialValue is invalid
-
+<hr>
 
 #### `delete(id)`
 Deletes an element from the database
@@ -112,7 +111,7 @@ Deletes an element from the database
     - `id` - A string representing the ID of the element to delete
 - **Returns**: `Object` - The deleted element
 - **Throws**: `MeowDBError` - If the ID is invalid
-
+<hr>
 
 #### `exists(id)`
 Checks if an element exists in the database
@@ -120,7 +119,7 @@ Checks if an element exists in the database
     - `id` - A string representing the ID of the element to check
 - **Returns**: `Boolean` - If it exists
 - **Throws**: `MeowDBError` - If the ID is invalid
-
+<hr>
 
 #### `get(id)`
 Gets an element of the database
@@ -128,7 +127,7 @@ Gets an element of the database
     - `id` - A string representing the ID of the element to get
 - **Returns**: `*` - The element
 - **Throws**: `MeowDBError` - If the ID is invalid
-
+<hr>
 
 #### `set(id, value)`
 Sets the value of an element in the database
@@ -137,7 +136,7 @@ Sets the value of an element in the database
     - `value` - The new value of the element
 - **Returns**: `*` - The value setted
 - **Throws**: `MeowDBError` - If the ID or value is invalid
-
+<hr>
 
 #### `find(callback, id?)`
 Finds an element in the database.
@@ -146,7 +145,7 @@ You __should only__ use this function if you're finding for objects
     - `id` - A string representing the ID of the root element to find another elements
 - **Returns**: `*` - The element
 - **Throws**: `MeowDBError` - If the ID or callback is invalid
-
+<hr>
 
 #### `filter(callback, id?)`
 Filters elements in the database.
