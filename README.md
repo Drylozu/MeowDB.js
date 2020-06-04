@@ -88,7 +88,7 @@ Creates or gets a database
     - `options` - An object with the options
         - `options.dir` - A string indicating the directory that will have the database (must be an absolute path)
         - `options.name` - A string with the name of the database
-<hr>
+
 
 ### Methods
 #### `all()`
