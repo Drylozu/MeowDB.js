@@ -171,7 +171,7 @@ declare class MeowDB {
      */
     public set(id: string, value: any): any;
 
-    
+
     /**
      * Finds an element in the database
      * @param {function} callback The function to check elements
@@ -180,6 +180,15 @@ declare class MeowDB {
      * @throws {MeowDBError} If the ID or callback is invalid
      */
     public find(callback: Function, id?: string): any;
+
+    /**
+     * Filters elements in the database
+     * @param {function} callback The function to filter the elements
+     * @param {string} id The ID to start filtering
+     * @returns {*} The elements (MeowDBObject[] if they're objects, array with ID and value if not)
+     * @throws {MeowDBError} If the ID or callback is invalid
+     */
+    public filter(callback: Function, id?: string): any[];
 }
 
 export = MeowDB;

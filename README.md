@@ -99,51 +99,59 @@ Returns all data stored in the database
 
 #### `create(id, initialValue)`
 Creates an element in the database with the specified ID and sets it's value
-
-**Parameters**:
-* `id` - A string representing the ID of the element to create
-* `initialValue` - The initial value of the element
-
-**Returns**: `Object` - The created element
-
-**Throws**: `MeowDBError` - If the ID or initialValue is invalid
+- **Parameters**:
+    - `id` - A string representing the ID of the element to create
+    - `initialValue` - The initial value of the element
+- **Returns**: `Object` - The created element
+- **Throws**: `MeowDBError` - If the ID or initialValue is invalid
 
 
 #### `delete(id)`
 Deletes an element from the database
-
-**Returns**: `Object` - The deleted element
-
-**Throws**: `MeowDBError` - If the ID is invalid
+- **Parameters**:
+    - `id` - A string representing the ID of the element to delete
+- **Returns**: `Object` - The deleted element
+- **Throws**: `MeowDBError` - If the ID is invalid
 
 
 #### `exists(id)`
 Checks if an element exists in the database
-
-**Returns**: `Boolean` - If it exists
-
-**Throws**: `MeowDBError` - If the ID is invalid
+- **Parameters**:
+    - `id` - A string representing the ID of the element to check
+- **Returns**: `Boolean` - If it exists
+- **Throws**: `MeowDBError` - If the ID is invalid
 
 
 #### `get(id)`
 Gets an element of the database
-
-**Returns**: `*` - The element
-
-**Throws**: `MeowDBError` - If the ID is invalid
+- **Parameters**:
+    - `id` - A string representing the ID of the element to get
+- **Returns**: `*` - The element
+- **Throws**: `MeowDBError` - If the ID is invalid
 
 
 #### `set(id, value)`
 Sets the value of an element in the database
-
-**Returns**: `*` - The value setted
-
-**Throws**: `MeowDBError` - If the ID or value is invalid
+- **Parameters**:
+    - `id` - A string representing the ID of the element to update
+    - `value` - The new value of the element
+- **Returns**: `*` - The value setted
+- **Throws**: `MeowDBError` - If the ID or value is invalid
 
 
 #### `find(callback, id?)`
-Finds an element in the database
+Finds an element in the database.
+You __should only__ use this function if you're finding for objects
+- **Parameters**:
+    - `id` - A string representing the ID of the root element to find another elements
+- **Returns**: `*` - The element
+- **Throws**: `MeowDBError` - If the ID or callback is invalid
 
-**Returns**: `*` - The element
 
-**Throws**: `MeowDBError` - If the ID or callback is invalid
+#### `filter(callback, id?)`
+Filters elements in the database.
+You __should only__ use this function if you're filtering for objects
+- **Parameters**:
+    - `id` - A string representing the ID of the root element to find another elements
+- **Returns**: `*` - The elements (MeowDBObject[] if they're objects, array with ID and value if not)
+- **Throws**: `MeowDBError` - If the ID or callback is invalid

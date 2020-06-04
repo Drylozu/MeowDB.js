@@ -44,6 +44,9 @@ console.log(temp.trimRight(), "\n");
 console.log("Finding an object with property 'country' as 'NI'");
 console.log(db.find((u) => u.country === "NI"), "\n");
 
+console.log("Filtering objects with property 'name'");
+console.log(db.filter((u) => u.name), "\n");
+
 console.log("Deleting an object");
 console.log(db.delete("0001"), "\n");
 

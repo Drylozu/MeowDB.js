@@ -142,6 +142,24 @@ class MeowDB {
         if (typeof element[1] === "object" && !(element[1] instanceof Array)) return new MeowDBObject(element[1], element[0], this._options.file);
         else return element[1];
     }
+
+    /**
+     * Filters elements in the database
+     * @param {function} callback The function to filter the elements
+     * @param {string} id The ID to start filtering
+     * @returns {any[]} The elements (MeowDBObject if they're objects, array with ID and value if not)
+     * @throws {MeowDBError} If the ID or callback is invalid
+     */
+    filter(callback, id = "/") {
+        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
+        let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
+        if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
+        let elements = Object.entries(data).filter(([_, e]) => callback(e));
+        if (!elements) return undefined;
+        if (elements.every((e) => typeof e[1] === "object")) return elements.map((e) => new MeowDBObject(e[1], e[0], this._options.file))
+        else return elements;
+    }
 }
 
 module.exports = MeowDB;
