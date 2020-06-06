@@ -17,7 +17,7 @@ class MeowDBUtils {
     validId(id) {
         if (typeof id !== "string") return false;
         if (id.length < 1) return false;
-        if (!/[a-zA-Z0-9\.]+/g.test(id)) return false; // eslint-disable-line no-useless-escape
+        if (!id.match(/^[a-zA-Z0-9\.]+$/)) return false;
         if (id.split(".").includes("")) return false;
         if (id.endsWith(".")) return false;
         return true;
