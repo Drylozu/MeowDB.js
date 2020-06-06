@@ -137,7 +137,7 @@ class MeowDB {
         if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
         if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
-        let element = Object.entries(data).find(([_, e]) => callback(e));
+        let element = Object.entries(data).find(([, e]) => callback(e));
         if (!element || !element[0]) return undefined;
         if (typeof element[1] === "object" && !(element[1] instanceof Array)) return new MeowDBObject(element[1], element[0], this._options.file);
         else return element[1];
@@ -155,7 +155,7 @@ class MeowDB {
         if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
         if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
-        let elements = Object.entries(data).filter(([_, e]) => callback(e));
+        let elements = Object.entries(data).filter(([, e]) => callback(e));
         if (!elements) return undefined;
         if (elements.every((e) => typeof e[1] === "object")) return elements.map((e) => new MeowDBObject(e[1], e[0], this._options.file))
         else return elements;

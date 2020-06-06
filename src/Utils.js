@@ -17,7 +17,7 @@ class MeowDBUtils {
     validId(id) {
         if (typeof id !== "string") return false;
         if (id.length < 1) return false;
-        if (!/[a-zA-Z0-9.]+/g.test(id)) return false;
+        if (!/[a-zA-Z0-9\.]+/g.test(id)) return false; // eslint-disable-line no-useless-escape
         if (id.split(".").includes("")) return false;
         if (id.endsWith(".")) return false;
         return true;
@@ -67,7 +67,7 @@ class MeowDBUtils {
         let allData = this.getAll(); // eslint-disable-line no-unused-vars
         let info = "";
         id.split(".").forEach((s, i, a) => {
-            info += `["${s}"]`;
+            info += `["${s.replace(/\n/g, "\\n")}"]`;
             if (i === (a.length - 1)) return;
             if (!eval(`allData${info}`)) eval(`allData${info} = {};`);
         });
@@ -85,7 +85,7 @@ class MeowDBUtils {
         let allData = this.getAll();
         let info = "";
         id.split(".").forEach((s, i, a) => {
-            info += `["${s}"]`;
+            info += `["${s.replace(/\n/g, "\\n")}"]`;
             if (i === (a.length - 1)) {
                 let last = eval(`allData${info}`);
                 if (last && create) return;
