@@ -1,7 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## Not Published
+## 2.1.6 - Updates
+- Updated devDependencies
+
+## 2.1.5 - More functions
 - Added `find` and `filter` functions
 - `README.md` more beautiful
 - The ID of an element now supports breaklines (\n)

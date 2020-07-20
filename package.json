@@ -1,6 +1,6 @@
 {
     "name": "meowdb",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "description": "Database in JSON",
     "main": "./src/index.js",
     "types": "./index.d.ts",
@@ -16,10 +16,10 @@
         "url": "git+https://github.com/Drylotrans/MeowDB.js.git"
     },
     "devDependencies": {
-        "@types/node": "^14.0.4",
-        "eslint": "^7.0.0",
-        "ts-node": "^8.10.1",
-        "typescript": "^3.9.3"
+        "@types/node": "^14.0.23",
+        "eslint": "^7.5.0",
+        "ts-node": "^8.10.2",
+        "typescript": "^3.9.7"
     },
     "keywords": [
         "fs",
