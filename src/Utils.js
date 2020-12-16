@@ -17,7 +17,7 @@ class MeowDBUtils {
     validId(id) {
         if (typeof id !== "string") return false;
         if (id.length < 1) return false;
-        if (!id.match(/^[a-zA-Z0-9\.]+$/)) return false;
+        if (id.includes("\n")) return false;
         if (id.split(".").includes("")) return false;
         if (id.endsWith(".")) return false;
         return true;
@@ -44,10 +44,13 @@ class MeowDBUtils {
      */
     stringifyData(data) {
         if (typeof data === "string") return `"${data}"`;
-        if (typeof data === "number") return `${data}`;
-        if (typeof data === "object" && !(data instanceof Array)) return `${JSON.stringify(data)}`;
+        if (typeof data === "number") return data.toString();
+        if (typeof data === "object" && !(data instanceof Array)) return JSON.stringify(data);
         if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => this.stringifyData(e)).join(",")}]`;
-        return `${data}`;
+        if (typeof data === "boolean") return data ? "true" : "false";
+        if (typeof data === "undefined") return "undefined";
+        // if data isn't a string/number/object/boolean/undefined, it will return undefined to not throw any errors
+        return "undefined";
     }
 
     /**
