@@ -68,7 +68,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID or initial value is invalid
      */
     create(id, initialValue) {
-        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID mustn't have breaklines");
         if (!this._utils.validValue(initialValue)) throw new MeowDBError("The value must be a string, number or an object");
         if (this._utils.get(id)) return this._utils.get(id);
         return this._utils.set(id, initialValue, true);
@@ -81,7 +81,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID is invalid or the element doesn't exists
      */
     delete(id) {
-        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID mustn't have breaklines");
         let data = this._utils.get(id);
         if (!data) throw new MeowDBError("That element doesn't exists in the database");
         this._utils.set(id, undefined, false);
@@ -95,7 +95,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID is invalid
      */
     exists(id) {
-        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID mustn't have breaklines");
         return Boolean(this._utils.get(id));
     }
 
@@ -106,7 +106,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID is invalid
      */
     get(id) {
-        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID mustn't have breaklines");
         let data = this._utils.get(id);
         if (typeof data === "object" && !(data instanceof Array)) return new MeowDBObject(data, id, this._options.file);
         else return data;
@@ -120,7 +120,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID or value is invalid
      */
     set(id, value) {
-        if (!this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (!this._utils.validId(id)) throw new MeowDBError("The ID mustn't have breaklines");
         if (!this._utils.validValue(value)) throw new MeowDBError("The value must be a string, number or an object");
         return this._utils.set(id, value, false);
     }
@@ -133,7 +133,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID or callback is invalid
      */
     find(callback, id = "/") {
-        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("The ID mustn't have breaklines");
         if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
         if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
@@ -151,7 +151,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID or callback is invalid
      */
     filter(callback, id = "/") {
-        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("The ID must only include letters, numbers, underscores and dots");
+        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("The ID mustn't have breaklines");
         if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
         if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");

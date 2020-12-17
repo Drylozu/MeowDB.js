@@ -1,13 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.1.7 - Improved data validation
+- Updated devDependencies.
+- Now all characters are accepted except line breaks (`\n`) in IDs (yes.).
+- Now undefined is returned if the value isn't supported.
+
 ## 2.1.6 - Updates
-- Updated devDependencies
+- Updated devDependencies.
 
 ## 2.1.5 - More functions
-- Added `find` and `filter` functions
-- `README.md` more beautiful
-- The ID of an element now supports breaklines (\n)
+- Added `find` and `filter` functions.
+- `README.md` more beautiful.
+- The ID of an element now supports breaklines (`\n`).
 
 ## 2.1.4 - Error fixed
 - `push` in an array (MeowDBObject property) works now.
