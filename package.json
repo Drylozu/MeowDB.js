@@ -1,13 +1,12 @@
 {
     "name": "meowdb",
-    "version": "2.1.7",
+    "version": "2.1.8",
     "description": "Database in JSON",
     "main": "./src/index.js",
     "types": "./index.d.ts",
     "scripts": {
         "eslint": "eslint src/ example/",
-        "test": "node example/index.js",
-        "test:ts": "ts-node example/index.ts"
+        "test": "node example/index.js"
     },
     "author": "Drylotrans",
     "license": "MIT",
