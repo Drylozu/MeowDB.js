@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.1.8 - Improved TS typings
+- Updated dependencies. 
+- Modified TS declaration file.
+
 ## 2.1.7 - Improved data validation
 - Updated devDependencies.
 - Now all characters are accepted except line breaks (`\n`) in IDs (yes.).
