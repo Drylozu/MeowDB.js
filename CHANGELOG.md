@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.1.9 - Fixed some bugs with some symbols
+- IDs and values (string) now accepts every character.
+- Bugs with IDs and values fixed (security errors).
+_Be free to use MeowDB now :)_
+
 ## 2.1.8 - Improved TS typings
 - Updated dependencies. 
 - Modified TS declaration file.
