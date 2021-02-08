@@ -8,7 +8,7 @@ class MeowDBUtils {
     constructor(file) {
         this.file = file;
     }
-    
+
     /**
      * Checks if an ID is valid
      * @param {string} id The ID to check
@@ -70,7 +70,7 @@ class MeowDBUtils {
         let allData = this.getAll(); // eslint-disable-line no-unused-vars
         let info = "";
         id.split(".").forEach((s, i, a) => {
-            info += `["${s.replace(/\n/g, "\\n")}"]`;
+            info += `["${s.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"]`;
             if (i === (a.length - 1)) return;
             if (!eval(`allData${info}`)) eval(`allData${info} = {};`);
         });
@@ -88,7 +88,7 @@ class MeowDBUtils {
         let allData = this.getAll();
         let info = "";
         id.split(".").forEach((s, i, a) => {
-            info += `["${s.replace(/\n/g, "\\n")}"]`;
+            info += `["${s.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"]`;
             if (i === (a.length - 1)) {
                 let last = eval(`allData${info}`);
                 if (last && create) return;
