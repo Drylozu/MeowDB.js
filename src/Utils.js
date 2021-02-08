@@ -48,9 +48,9 @@ class MeowDBUtils {
         if (typeof data === "object" && !(data instanceof Array)) return JSON.stringify(data);
         if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => this.stringifyData(e)).join(",")}]`;
         if (typeof data === "boolean") return data ? "true" : "false";
-        if (typeof data === "undefined") return "null"; // JSON files can't store "undefined" values
+        if (typeof data === "undefined") return "undefined";
         // if data isn't a string/number/object/boolean/undefined, it will return null to not throw any errors
-        return "null";
+        return "undefined";
     }
 
     /**

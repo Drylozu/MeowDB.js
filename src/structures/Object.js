@@ -11,11 +11,13 @@ function validValue(value) {
 }
 
 function stringifyData(data) {
-    if (typeof data === "string") return `"${data}"`;
-    if (typeof data === "number") return `${data}`;
-    if (typeof data === "object" && !(data instanceof Array)) return `${JSON.stringify(data)}`;
-    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => stringifyData(e)).join(",")}]`;
-    return `${data}`;
+    if (typeof data === "string") return `"${data.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"`;
+    if (typeof data === "number") return data.toString();
+    if (typeof data === "object" && !(data instanceof Array)) return JSON.stringify(data);
+    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => this.stringifyData(e)).join(",")}]`;
+    if (typeof data === "boolean") return data ? "true" : "false";
+    if (typeof data === "undefined") return "undefined";
+    return "undefined";
 }
 
 let File, Id;
@@ -52,7 +54,7 @@ class MeowDBObject {
         let info = "";
         if (this.__id)
             this.__id.split(".").forEach((s) => {
-                info += `["${s}"]`;
+                info += `["${s.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"]`;
             });
         Object.entries(this).forEach((i) => {
             if (i[0].startsWith("__")) return;
