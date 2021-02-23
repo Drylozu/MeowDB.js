@@ -39,13 +39,20 @@ class MeowDB {
          * The options of the database
          * @type {MeowDBPrivateOptions}
          * @private
+         * @readonly
          */
-        Object.defineProperty(this, "_options", { value: { ...options, file: path.join(options.dir, `${options.name}.json`) } });
+        Object.defineProperty(this, "_options", {
+            value: {
+                ...options,
+                file: path.join(options.dir, `${options.name}.json`)
+            }
+        });
 
         /**
          * The database utils
          * @type {MeowDBUtils}
          * @private
+         * @readonly
          */
         Object.defineProperty(this, "_utils", { value: new MeowDBUtils(this._options.file) });
 
