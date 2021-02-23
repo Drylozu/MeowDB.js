@@ -1,7 +1,9 @@
 # MeowDB.js
 ![MeowDB](https://i.imgur.com/cC7AZ18.png)
 
-![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylotrans/MeowDB.js) ![Last Version Published](https://img.shields.io/npm/v/meowdb)
+![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylotrans/MeowDB.js)
+
+![GitHub Repo stars](https://img.shields.io/github/stars/Drylotrans/MeowDB.js?style=social)
 
 [![NPM](https://nodei.co/npm/meowdb.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/meowdb/)
 
@@ -13,11 +15,13 @@
 ## Installation
 - `npm install meowdb --save`.
 
-Also available in Ruby! [MeowDB.rb](https://rubygems.org/gems/meowdb)
+_Also available in Ruby! [MeowDB.rb](https://rubygems.org/gems/meowdb)_
+
+_I recommend not using versions lower than **2.1.9** or being aware of updates to the library._
 
 
 ## Usage
-**JavaScript - Node.js require**
+**JavaScript - CommonJS require**
 ```js
 const MeowDB = require("meowdb");
 
@@ -27,7 +31,7 @@ const myDatabase = new MeowDB({
 });
 ```
 
-**TypeScript import**
+**TypeScript - ES6 import**
 ```ts
 import MeowDB from "meowdb";
 
@@ -39,7 +43,8 @@ const myDatabase: MeowDB = new MeowDB({
 
 **Example of all functions**
 ```js
-// Creating object (only if it doesn't exist)
+// Creating object (it'll search property by property and if it doesn't exist, it'll create it otherwise it'll not modify the current information~)
+// * where the first parameter is the ID, they're like properties of an object (same thing in most functions)
 console.log(myDatabase.create("0001", {
     name: "David",
     country: "CO",
