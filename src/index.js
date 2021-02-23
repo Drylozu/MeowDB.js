@@ -57,7 +57,10 @@ class MeowDB {
      * @returns {MeowDBObject} All data
      */
     all() {
-        return new MeowDBObject(this._utils.getAll(), "/", this._options.file);
+        let data = this._utils.getAll();
+        if (typeof data === "object" && !(data instanceof Array))
+            return new MeowDBObject(data, "/", this._options.file);
+        else return data;
     }
 
     /**
@@ -157,7 +160,7 @@ class MeowDB {
         if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
         let elements = Object.entries(data).filter(([, e]) => callback(e));
         if (!elements) return undefined;
-        if (elements.every((e) => typeof e[1] === "object")) return elements.map((e) => new MeowDBObject(e[1], e[0], this._options.file))
+        if (elements.every((e) => typeof e[1] === "object")) return elements.map((e) => new MeowDBObject(e[1], e[0], this._options.file));
         else return elements;
     }
 }
