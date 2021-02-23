@@ -57,7 +57,6 @@ class MeowDBObject {
                 info += `["${s.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"]`;
             });
         Object.entries(this).forEach((i) => {
-            if (i[0].startsWith("__")) return;
             if (!validValue(i[1])) throw new MeowDBError("One of the defined values aren't a string, number, object, array, undefined or a boolean");
             eval(`allData${info}["${i[0]}"] = ${stringifyData(i[1])};`);
         });
