@@ -152,7 +152,7 @@ Sets the value of an element in the database
 Finds an element in the database.
 You __should only__ use this function if you're finding for objects
 - **Parameters**:
-    - `id` - A string representing the ID of the root element to find another elements
+    - `id?` - A string representing the ID of the root element to find another elements _(optional)_
 - **Returns**: `*` - The element
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID or callback is invalid
 <hr>
@@ -161,7 +161,7 @@ You __should only__ use this function if you're finding for objects
 Filters elements in the database.
 You __should only__ use this function if you're filtering for objects
 - **Parameters**:
-    - `id` - A string representing the ID of the root element to find another elements
+    - `id?` - A string representing the ID of the root element to find another elements _(optional)_
 - **Returns**: `*` - The elements (MeowDBObject[] if they're objects, array with ID and value if not)
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID or callback is invalid
 
