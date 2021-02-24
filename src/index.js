@@ -33,7 +33,6 @@ class MeowDB {
         if (typeof options.name !== "string") throw new MeowDBError("The name of the database must be an string");
         if (!fs.existsSync(options.dir)) throw new MeowDBError("The directory must be valid");
         if (options.name.length < 1) throw new MeowDBError("The name must have more of one character");
-        if (!/[a-zA-Z0-9_]+/g.test(options.name)) throw new MeowDBError("The name must only include letters, numbers and underscores");
 
         /**
          * The options of the database
