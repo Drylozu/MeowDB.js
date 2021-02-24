@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 - Removed all TS things (only .d.ts file).
 - Removed dependencies badge (buggy).
 - Improved README.
+- Improved error messages.
 
 ## 2.1.9 - Fixed some bugs with some symbols
 - IDs and values (string) now accepts every character.
