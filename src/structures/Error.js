@@ -10,7 +10,7 @@ class MeowDBError extends Error {
          * The name of the error
          * @type {string}
          */
-        this.name = "MeowDB";
+        this.name = "[MeowDBError]";
 
         /**
          * The message of the error

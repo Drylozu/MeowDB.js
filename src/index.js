@@ -143,9 +143,9 @@ class MeowDB {
      */
     find(callback, id = "/") {
         if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
-        if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
+        if (typeof callback !== "function") throw new MeowDBError("The callback must be a function");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
-        if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
+        if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database"); /// trying to don't throw unnecessary errors
         let element = Object.entries(data).find(([, e]) => callback(e));
         if (!element || !element[0]) return undefined;
         if (typeof element[1] === "object" && !(element[1] instanceof Array)) return new MeowDBObject(element[1], element[0], this._options.file);
@@ -161,9 +161,9 @@ class MeowDB {
      */
     filter(callback, id = "/") {
         if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
-        if (typeof callback !== "function") throw new MeowDBError("The find function must have a function as first parameter");
+        if (typeof callback !== "function") throw new MeowDBError("The callback must be a function");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
-        if (!data) throw new MeowDBError("That element specified by ID doesn't exists in the database");
+        if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database") /// trying to don't throw unnecessary errors
         let elements = Object.entries(data).filter(([, e]) => callback(e));
         if (!elements) return undefined;
         if (elements.every((e) => typeof e[1] === "object")) return elements.map((e) => new MeowDBObject(e[1], e[0], this._options.file));
