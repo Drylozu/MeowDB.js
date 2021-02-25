@@ -90,7 +90,7 @@ declare class MeowDBUtils {
 /**
  * A Object from a database
  */
-declare interface MeowDBObject {
+interface MeowDBObject {
     /**
      * A property of the object
      */
@@ -102,93 +102,93 @@ declare interface MeowDBObject {
     save(): Object;
 }
 
-declare module 'meowdb' {
+/**
+ * Class representing a database
+ */
+declare class MeowDB {
     /**
-     * Class representing a database
+     * The MeowDB private options
      */
-    export default class MeowDB {
-        /**
-         * The MeowDB private options
-         */
-        private _options: MeowDBPrivateOptions;
+    private _options: MeowDBPrivateOptions;
 
-        /**
-         * The MeowDB private utils
-         */
-        private _utils: MeowDBUtils;
+    /**
+     * The MeowDB private utils
+     */
+    private _utils: MeowDBUtils;
 
-        /**
-         * Create or get a database.
-         * @param {MeowDBOptions} options MeowDB options object
-         * @throws {MeowDBError} If any value is invalid
-         */
-        constructor(options: MeowDBOptions);
+    /**
+     * Create or get a database.
+     * @param {MeowDBOptions} options MeowDB options object
+     * @throws {MeowDBError} If any value is invalid
+     */
+    constructor(options: MeowDBOptions);
 
-        /**
-         * Returns all data stored in the database
-         * @returns {MeowDBObject} All the data
-         */
-        public all(): MeowDBObject;
+    /**
+     * Returns all data stored in the database
+     * @returns {MeowDBObject} All the data
+     */
+    public all(): MeowDBObject;
 
-        /**
-         * Creates an element in the database (only if it doesn't exists already)
-         * @param {string} id The ID to create
-         * @param {*} initialValue The initial value
-         * @returns {*} The created element
-         * @throws {MeowDBError} If the ID or initial value are invalid
-         */
-        public create(id: string, initialValue: any): any;
+    /**
+     * Creates an element in the database (only if it doesn't exists already)
+     * @param {string} id The ID to create
+     * @param {*} initialValue The initial value
+     * @returns {*} The created element
+     * @throws {MeowDBError} If the ID or initial value are invalid
+     */
+    public create(id: string, initialValue: any): any;
 
-        /**
-         * Deletes an element from the database
-         * @param {string} id The ID of the element
-         * @returns {*} The deleted element
-         * @throws {MeowDBError} If the ID is invalid or the element doesn't exists
-         */
-        public delete(id: string): any;
+    /**
+     * Deletes an element from the database
+     * @param {string} id The ID of the element
+     * @returns {*} The deleted element
+     * @throws {MeowDBError} If the ID is invalid or the element doesn't exists
+     */
+    public delete(id: string): any;
 
-        /**
-         * Checks if an element exists in the database
-         * @param {string} id The ID to check
-         * @returns {Boolean} If it exists
-         * @throws {MeowDBError} If the ID is invalid
-         */
-        public exists(id: string): Boolean;
+    /**
+     * Checks if an element exists in the database
+     * @param {string} id The ID to check
+     * @returns {Boolean} If it exists
+     * @throws {MeowDBError} If the ID is invalid
+     */
+    public exists(id: string): Boolean;
 
-        /**
-         * Gets an element of the database
-         * @param {string} id The ID of the element
-         * @returns {*} The element
-         * @throws {MeowDBError} If the ID is invalid
-         */
-        public get(id: string): any;
+    /**
+     * Gets an element of the database
+     * @param {string} id The ID of the element
+     * @returns {*} The element
+     * @throws {MeowDBError} If the ID is invalid
+     */
+    public get(id: string): any;
 
-        /**
-         * Sets the value of an element in the database
-         * @param {string} id The ID of the element
-         * @param {*} value The value to be setted
-         * @returns {*} The value setted
-         * @throws {MeowDBError} If the ID or value is invalid
-         */
-        public set(id: string, value: any): any;
+    /**
+     * Sets the value of an element in the database
+     * @param {string} id The ID of the element
+     * @param {*} value The value to be setted
+     * @returns {*} The value setted
+     * @throws {MeowDBError} If the ID or value is invalid
+     */
+    public set(id: string, value: any): any;
 
 
-        /**
-         * Finds an element in the database
-         * @param {function} callback The function to check elements
-         * @param {string} id The ID to start checking
-         * @returns {*} The element
-         * @throws {MeowDBError} If the ID or callback is invalid
-         */
-        public find(callback: Function, id?: string): any;
+    /**
+     * Finds an element in the database
+     * @param {function} callback The function to check elements
+     * @param {string} id The ID to start checking
+     * @returns {*} The element
+     * @throws {MeowDBError} If the ID or callback is invalid
+     */
+    public find(callback: Function, id?: string): any;
 
-        /**
-         * Filters elements in the database
-         * @param {function} callback The function to filter the elements
-         * @param {string} id The ID to start filtering
-         * @returns {*} The elements (MeowDBObject[] if they're objects, array with ID and value if not)
-         * @throws {MeowDBError} If the ID or callback is invalid
-         */
-        public filter(callback: Function, id?: string): any[];
-    }
+    /**
+     * Filters elements in the database
+     * @param {function} callback The function to filter the elements
+     * @param {string} id The ID to start filtering
+     * @returns {*} The elements (MeowDBObject[] if they're objects, array with ID and value if not)
+     * @throws {MeowDBError} If the ID or callback is invalid
+     */
+    public filter(callback: Function, id?: string): any[];
 }
+
+export = MeowDB;
