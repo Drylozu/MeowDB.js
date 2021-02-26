@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## (master) - Fix some ID errors
+- When filtering or finding, the generated MeowDBObject didn't save the full ID of the object, so the function save wouldn't save well.
+
 ## 2.2.0 - Improved MeowDB in general
 - Removed all TS things (only .d.ts file).
 - Removed dependencies badge (buggy).
