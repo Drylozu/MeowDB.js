@@ -148,7 +148,7 @@ class MeowDB {
         if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database"); /// trying to don't throw unnecessary errors
         let element = Object.entries(data).find(([, e]) => callback(e));
         if (!element || !element[0]) return undefined;
-        if (typeof element[1] === "object" && !(element[1] instanceof Array)) return new MeowDBObject(element[1], element[0], this._options.file);
+        if (typeof element[1] === "object" && !(element[1] instanceof Array)) return new MeowDBObject(element[1], id === "/" ? element[0] : `${id}.${element[0]}`, this._options.file);
         else return element[1];
     }
 
@@ -166,7 +166,7 @@ class MeowDB {
         if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database") /// trying to don't throw unnecessary errors
         let elements = Object.entries(data).filter(([, e]) => callback(e));
         if (!elements) return undefined;
-        if (elements.every((e) => typeof e[1] === "object")) return elements.map((e) => new MeowDBObject(e[1], e[0], this._options.file));
+        if (elements.every((e) => typeof e[1] === "object")) return elements.map((e) => new MeowDBObject(e[1], id === "/" ? e[0] : `${id}.${e[0]}`, this._options.file));
         else return elements;
     }
 }
