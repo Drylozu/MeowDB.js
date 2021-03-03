@@ -9,11 +9,11 @@
         "eslint": "eslint src/ example/",
         "test": "node example/index.js"
     },
-    "author": "Drylotrans",
+    "author": "Drylozu",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Drylotrans/MeowDB.js.git"
+        "url": "git+https://github.com/Drylozu/MeowDB.js.git"
     },
     "devDependencies": {
         "eslint": "^7.20.0"
@@ -26,6 +26,6 @@
         "json"
     ],
     "bugs": {
-        "url": "https://github.com/Drylotrans/MeowDB.js/issues"
+        "url": "https://github.com/Drylozu/MeowDB.js/issues"
     }
 }

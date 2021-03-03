@@ -1,13 +1,13 @@
 # MeowDB.js
 ![MeowDB](https://i.imgur.com/cC7AZ18.png)
 
-![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylotrans/MeowDB.js) ![GitHub Repo stars](https://img.shields.io/github/stars/Drylotrans/MeowDB.js?style=social)
+![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylozu/MeowDB.js) ![GitHub Repo stars](https://img.shields.io/github/stars/Drylozu/MeowDB.js?style=social)
 
 [![NPM](https://nodei.co/npm/meowdb.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/meowdb/)
 
 "Database" in JSON (Node.JS Library).
 
-**Released v2.2.0**. See [CHANGELOG](https://github.com/Drylotrans/MeowDB.js/blob/master/CHANGELOG.md).
+**Released v2.2.0**. See [CHANGELOG](https://github.com/Drylozu/MeowDB.js/blob/master/CHANGELOG.md).
 
 
 ## Installation
