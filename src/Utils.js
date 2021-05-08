@@ -10,49 +10,6 @@ class MeowDBUtils {
     }
 
     /**
-     * Checks if an ID is valid
-     * @param {string} id The ID to check
-     * @returns {Boolean} If it's valid
-     */
-    validId(id) {
-        if (typeof id !== "string") return false;
-        if (id.length < 1) return false;
-        if (id.split(".").includes("")) return false;
-        if (id.endsWith(".")) return false;
-        return true;
-    }
-
-    /**
-     * Checks if a value is valid to store
-     * @param {any} value The value to check
-     * @returns {Boolean} If it's valid
-     */
-    validValue(value) {
-        if (typeof value === "string") return true;
-        if (typeof value === "number") return true;
-        if (typeof value === "object") return true;
-        if (typeof value === "boolean") return true;
-        if (typeof value === "undefined") return true;
-        return false;
-    }
-
-    /**
-     * Converts any valid data to string
-     * @param {any} data The data to convert in a string
-     * @returns {string} The data converted
-     */
-    stringifyData(data) {
-        if (typeof data === "string") return `"${data.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"`;
-        if (typeof data === "number") return data.toString();
-        if (typeof data === "object" && !(data instanceof Array)) return JSON.stringify(data);
-        if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => this.stringifyData(e)).join(",")}]`;
-        if (typeof data === "boolean") return data ? "true" : "false";
-        if (typeof data === "undefined") return "undefined";
-        // if data isn't a string/number/object/boolean/undefined, it will return "null" to not throw any errors
-        return "undefined";
-    }
-
-    /**
      * Returns all the data stored
      * @returns {Object} The data
      */
@@ -80,7 +37,7 @@ class MeowDBUtils {
      * Sets an element and stores it
      * @param {string} id The ID of the element to set
      * @param {any} data The value of the element
-     * @param {Boolean} create If it's in creation mode
+     * @param {boolean} create If it's in creation mode
      * @returns {Object} The new value
      */
     set(id, data, create = false) {
@@ -91,7 +48,7 @@ class MeowDBUtils {
             if (i === (a.length - 1)) {
                 let last = eval(`allData${info}`);
                 if (last && create) return;
-                eval(`allData${info} = ${this.stringifyData(data)}`);
+                eval(`allData${info} = ${MeowDBUtils.stringifyData(data)}`);
             } else {
                 if (!eval(`allData${info}`)) eval(`allData${info} = {};`);
             }
@@ -100,5 +57,48 @@ class MeowDBUtils {
         return eval(`allData${info}`);
     }
 }
+
+/**
+     * Checks if an ID is valid
+     * @param {string} id The ID to check
+     * @returns {Boolean} If it's valid
+     */
+MeowDBUtils.validId = (id) => {
+    if (typeof id !== "string") return false;
+    if (id.length < 1) return false;
+    if (id.split(".").includes("")) return false;
+    if (id.endsWith(".")) return false;
+    return true;
+};
+
+/**
+* Checks if a value is valid to store
+* @param {any} value The value to check
+* @returns {boolean} If it's valid
+*/
+MeowDBUtils.validValue = (value) => {
+    if (typeof value === "string") return true;
+    if (typeof value === "number") return true;
+    if (typeof value === "object") return true;
+    if (typeof value === "boolean") return true;
+    if (typeof value === "undefined") return true;
+    return false;
+};
+
+/**
+* Converts any valid data to string
+* @param {any} data The data to convert in a string
+* @returns {string} The data converted
+*/
+MeowDBUtils.stringifyData = (data) => {
+    if (typeof data === "string") return `"${data.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"`;
+    if (typeof data === "number") return data.toString();
+    if (typeof data === "object" && !(data instanceof Array)) return JSON.stringify(data);
+    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => MeowDBUtils.stringifyData(e)).join(",")}]`;
+    if (typeof data === "boolean") return data ? "true" : "false";
+    if (typeof data === "undefined") return "undefined";
+    // if data isn't a string/number/object/boolean/undefined, it will return "null" to not throw any errors
+    return "undefined";
+};
 
 module.exports = MeowDBUtils;

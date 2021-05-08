@@ -53,7 +53,9 @@ class MeowDB {
          * @private
          * @readonly
          */
-        Object.defineProperty(this, "_utils", { value: new MeowDBUtils(this._options.file) });
+        Object.defineProperty(this, "_utils", {
+            value: new MeowDBUtils(this._options.file)
+        });
 
         if (!fs.existsSync(this._options.file)) fs.writeFileSync(this._options.file, "{}");
     }
@@ -72,13 +74,13 @@ class MeowDB {
     /**
      * Creates an element in the database (only if it doesn't exists already)
      * @param {string} id The ID to create
-     * @param {*} initialValue The initial value
+     * @param {any} initialValue The initial value
      * @returns {Object} The created element
      * @throws {MeowDBError} If the ID or initial value is invalid
      */
     create(id, initialValue) {
-        if (!this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
-        if (!this._utils.validValue(initialValue)) throw new MeowDBError("The value must be a string, number, boolean, undefined or an object");
+        if (!MeowDBUtils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
+        if (!MeowDBUtils.validValue(initialValue)) throw new MeowDBError("The value must be a string, number, boolean, undefined or an object");
         if (this._utils.get(id)) return this._utils.get(id);
         return this._utils.set(id, initialValue, true);
     }
@@ -90,7 +92,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID is invalid or the element doesn't exists
      */
     delete(id) {
-        if (!this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
+        if (!MeowDBUtils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
         let data = this._utils.get(id);
         if (!data) throw new MeowDBError("That element doesn't exists in the database");
         this._utils.set(id, undefined, false);
@@ -100,22 +102,22 @@ class MeowDB {
     /**
      * Checks if an element exists in the database
      * @param {string} id The ID to check
-     * @returns {Boolean} If it exists
+     * @returns {boolean} If it exists
      * @throws {MeowDBError} If the ID is invalid
      */
     exists(id) {
-        if (!this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
+        if (!MeowDBUtils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
         return Boolean(this._utils.get(id));
     }
 
     /**
      * Gets an element of the database
      * @param {string} id The ID of the element
-     * @returns {*} The element
+     * @returns {any} The element
      * @throws {MeowDBError} If the ID is invalid
      */
     get(id) {
-        if (!this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
+        if (!MeowDBUtils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
         let data = this._utils.get(id);
         if (typeof data === "object" && !(data instanceof Array)) return new MeowDBObject(data, id, this._options.file);
         else return data;
@@ -124,13 +126,13 @@ class MeowDB {
     /**
      * Sets the value of an element in the database
      * @param {string} id The ID of the element
-     * @param {*} value The value to be setted
-     * @returns {*} The value setted
+     * @param {any} value The value to be setted
+     * @returns {any} The value setted
      * @throws {MeowDBError} If the ID or value is invalid
      */
     set(id, value) {
-        if (!this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
-        if (!this._utils.validValue(value)) throw new MeowDBError("The value must be a string, number, boolean, undefined or an object");
+        if (!MeowDBUtils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
+        if (!MeowDBUtils.validValue(value)) throw new MeowDBError("The value must be a string, number, boolean, undefined or an object");
         return this._utils.set(id, value, false);
     }
 
@@ -138,11 +140,11 @@ class MeowDB {
      * Finds an element in the database
      * @param {function} callback The function to check elements
      * @param {string} id The ID to start checking
-     * @returns {*} The element
+     * @returns {any} The element
      * @throws {MeowDBError} If the ID or callback is invalid
      */
     find(callback, id = "/") {
-        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
+        if (id !== "/" && !MeowDBUtils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
         if (typeof callback !== "function") throw new MeowDBError("The callback must be a function");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
         if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database"); /// trying to don't throw unnecessary errors
@@ -160,7 +162,7 @@ class MeowDB {
      * @throws {MeowDBError} If the ID or callback is invalid
      */
     filter(callback, id = "/") {
-        if (id !== "/" && !this._utils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
+        if (id !== "/" && !MeowDBUtils.validId(id)) throw new MeowDBError("Invalid ID provided, it shouldn't contain blank properties");
         if (typeof callback !== "function") throw new MeowDBError("The callback must be a function");
         let data = id === "/" ? this._utils.getAll() : this._utils.get(id);
         if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database") /// trying to don't throw unnecessary errors

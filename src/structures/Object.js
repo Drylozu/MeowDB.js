@@ -1,24 +1,6 @@
+const { validValue, stringifyData } = require("../Utils.js");
 const MeowDBError = require("./Error.js");
 const fs = require("fs");
-
-function validValue(value) {
-    if (typeof value === "string") return true;
-    if (typeof value === "number") return true;
-    if (typeof value === "object") return true;
-    if (typeof value === "boolean") return true;
-    if (typeof value === "undefined") return true;
-    return false;
-}
-
-function stringifyData(data) {
-    if (typeof data === "string") return `"${data.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"`;
-    if (typeof data === "number") return data.toString();
-    if (typeof data === "object" && !(data instanceof Array)) return JSON.stringify(data);
-    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => stringifyData(e)).join(",")}]`;
-    if (typeof data === "boolean") return data ? "true" : "false";
-    if (typeof data === "undefined") return "undefined";
-    return "undefined";
-}
 
 let File, Id;
 
