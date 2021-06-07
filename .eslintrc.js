@@ -1,16 +1,28 @@
 module.exports = {
-    "env": {
-        "commonjs": true,
-        "es6": true,
-        "node": true
+    env: {
+        commonjs: true,
+        es2021: true,
+        node: true
     },
-    "extends": "eslint:recommended",
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+    extends: [
+        'eslint:recommended'
+    ],
+    parserOptions: {
+        ecmaVersion: 12
     },
-    "parserOptions": {
-        "ecmaVersion": 11
+    rules: {
+        'no-empty': 'off',
+        'prefer-const': 'warn',
+        'arrow-parens': 'warn',
+        'no-unused-vars': 'warn',
+        quotes: ['warn', 'single'],
+        'no-empty-function': 'warn',
+        'eol-last': ['warn', 'never'],
+        'comma-dangle': ['warn', 'never'],
+        'quote-props': ['warn', 'as-needed'],
+        semi: ['warn', 'always', { omitLastInOneLineBlock: true }]
     },
-    "rules": {}
+    ignorePatterns: [
+        'node_module'
+    ]
 };

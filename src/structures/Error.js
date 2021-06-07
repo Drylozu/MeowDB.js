@@ -4,13 +4,13 @@ class MeowDBError extends Error {
      * Creates an error.
      * @param {string} message Descriptive message of the error
      */
-    constructor(message = "Unknown error") {
+    constructor(message = 'Unknown error') {
         super();
         /**
          * The name of the error
          * @type {string}
          */
-        this.name = "[MeowDBError]";
+        this.name = '[MeowDBError]';
 
         /**
          * The message of the error

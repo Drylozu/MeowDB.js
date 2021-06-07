@@ -25,14 +25,47 @@ declare module 'meowdb' {
     }
 
     /**
-     * Class representing a error from MeowDB
+     * Class representing an error from MeowDB
      */
-    interface MeowDBError extends Error { }
+    class MeowDBError extends Error { }
 
     /**
      * Class that contains every method to parse options or modify data
      */
     class MeowDBUtils {
+        /**
+         * The file that contains the data
+         */
+        public file: string;
+
+        /**
+         * MeowDBUtils class
+         * @param {string} file The file that contains the data
+         */
+        constructor(file: string);
+
+        /**
+         * Returns all the data stored
+         * @returns {Object} The data
+         */
+        public getAll(): Object;
+
+        /**
+         * Gets an element stored
+         * @param {string} id The ID of the element to get
+         * @returns {any} The element
+         */
+        public get(id: string): any;
+
+        /**
+         * Sets an element and stores it
+         * @param {string} id The ID of the element to set
+         * @param {any} data The value of the element
+         * @param {boolean} create If it's in creation mode
+         * @returns {any} The new value
+         */
+        public set(id: string, data: any, create: boolean): any;
+
         /**
          * Checks if a value is valid to store
          * @param {any} value The value to check
@@ -53,45 +86,15 @@ declare module 'meowdb' {
          * @returns {boolean} If it's valid
          */
         static validId(id: string): boolean;
-
-        /**
-         * The file that contains the data
-         */
-        file: string;
-
-        /**
-         * MeowDBUtils class
-         * @param {string} file The file that contains the data
-         */
-        constructor(file: string);
-
-        /**
-         * Returns all the data stored
-         * @returns {Object} The data
-         */
-        getAll(): Object;
-
-        /**
-         * Gets an element stored
-         * @param {string} id The ID of the element to get
-         * @returns {any} The element
-         */
-        get(id: string): any;
-
-        /**
-         * Sets an element and stores it
-         * @param {string} id The ID of the element to set
-         * @param {any} data The value of the element
-         * @param {boolean} create If it's in creation mode
-         * @returns {any} The new value
-         */
-        set(id: string, data: any, create: boolean): any;
     }
 
     /**
-     * A Object from a database
+     * An Object from a database
      */
-    interface MeowDBObject {
+    class MeowDBObject {
+        public readonly __id: string;
+        public readonly __file: string;
+
         /**
          * A property of the object
          */
@@ -100,7 +103,7 @@ declare module 'meowdb' {
         /**
          * Saves the modified object
          */
-        save(): Record<string, any>;
+        public save(): Record<string, any>;
     }
 
     /**
@@ -126,9 +129,9 @@ declare module 'meowdb' {
 
         /**
          * Returns all data stored in the database
-         * @returns {MeowDBObject} All the data
+         * @returns {(MeowDBObject|any)} All the data
          */
-        public all(): MeowDBObject;
+        public all(): MeowDBObject | any;
 
         /**
          * Creates an element in the database (only if it doesn't exists already)
@@ -158,10 +161,10 @@ declare module 'meowdb' {
         /**
          * Gets an element of the database
          * @param {string} id The ID of the element
-         * @returns {any} The element
+         * @returns {(MeowDBObject|any)} The element
          * @throws {MeowDBError} If the ID is invalid
          */
-        public get(id: string): any;
+        public get(id: string): MeowDBObject | any;
 
         /**
          * Sets the value of an element in the database
@@ -177,18 +180,18 @@ declare module 'meowdb' {
          * Finds an element in the database
          * @param {Function} callback The function to check elements
          * @param {string} id The ID to start checking
-         * @returns {any} The element
+         * @returns {(MeowDBObject|any)} The element
          * @throws {MeowDBError} If the ID or callback is invalid
          */
-        public find(callback: Function, id?: string): any;
+        public find(callback: (data: any) => boolean, id?: string): MeowDBObject | any;
 
         /**
          * Filters elements in the database
          * @param {Function} callback The function to filter the elements
          * @param {string} id The ID to start filtering
-         * @returns {any[]} The elements (MeowDBObject[] if they're objects, array with ID and value if not)
+         * @returns {(MeowDBObject|any)[]} The elements (MeowDBObject[] if they're objects, array with ID and value if not)
          * @throws {MeowDBError} If the ID or callback is invalid
          */
-        public filter(callback: Function, id?: string): any[];
+        public filter(callback: (data: any) => boolean, id?: string): (MeowDBObject | any)[];
     }
 }

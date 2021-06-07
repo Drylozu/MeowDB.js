@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require('fs');
 
 /** Class that contains every method to parse options or modify data. */
 class MeowDBUtils {
@@ -23,10 +23,10 @@ class MeowDBUtils {
      * @returns {any} The element
      */
     get(id) {
-        let allData = this.getAll(); // eslint-disable-line no-unused-vars
-        let info = "";
-        id.split(".").forEach((s, i, a) => {
-            info += `["${s.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"]`;
+        const allData = this.getAll(); // eslint-disable-line no-unused-vars
+        let info = '';
+        id.split('.').forEach((s, i, a) => {
+            info += `[${JSON.stringify(s)}]`;
             if (i === (a.length - 1)) return;
             if (!eval(`allData${info}`)) eval(`allData${info} = {};`);
         });
@@ -41,12 +41,12 @@ class MeowDBUtils {
      * @returns {Object} The new value
      */
     set(id, data, create = false) {
-        let allData = this.getAll();
-        let info = "";
-        id.split(".").forEach((s, i, a) => {
-            info += `["${s.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"]`;
+        const allData = this.getAll();
+        let info = '';
+        id.split('.').forEach((s, i, a) => {
+            info += `[${JSON.stringify(s)}]`;
             if (i === (a.length - 1)) {
-                let last = eval(`allData${info}`);
+                const last = eval(`allData${info}`);
                 if (last && create) return;
                 eval(`allData${info} = ${MeowDBUtils.stringifyData(data)}`);
             } else {
@@ -64,10 +64,10 @@ class MeowDBUtils {
      * @returns {Boolean} If it's valid
      */
 MeowDBUtils.validId = (id) => {
-    if (typeof id !== "string") return false;
+    if (typeof id !== 'string') return false;
     if (id.length < 1) return false;
-    if (id.split(".").includes("")) return false;
-    if (id.endsWith(".")) return false;
+    if (id.split('.').includes('')) return false;
+    if (id.endsWith('.')) return false;
     return true;
 };
 
@@ -77,11 +77,11 @@ MeowDBUtils.validId = (id) => {
 * @returns {boolean} If it's valid
 */
 MeowDBUtils.validValue = (value) => {
-    if (typeof value === "string") return true;
-    if (typeof value === "number") return true;
-    if (typeof value === "object") return true;
-    if (typeof value === "boolean") return true;
-    if (typeof value === "undefined") return true;
+    if (typeof value === 'string') return true;
+    if (typeof value === 'number') return true;
+    if (typeof value === 'object') return true;
+    if (typeof value === 'boolean') return true;
+    if (typeof value === 'undefined') return true;
     return false;
 };
 
@@ -91,14 +91,14 @@ MeowDBUtils.validValue = (value) => {
 * @returns {string} The data converted
 */
 MeowDBUtils.stringifyData = (data) => {
-    if (typeof data === "string") return `"${data.replace(/\n/g, "\\n").replace(/"/g, "\\\"")}"`;
-    if (typeof data === "number") return data.toString();
-    if (typeof data === "object" && !(data instanceof Array)) return JSON.stringify(data);
-    if (typeof data === "object" && (data instanceof Array)) return `[${data.map((e) => MeowDBUtils.stringifyData(e)).join(",")}]`;
-    if (typeof data === "boolean") return data ? "true" : "false";
-    if (typeof data === "undefined") return "undefined";
-    // if data isn't a string/number/object/boolean/undefined, it will return "null" to not throw any errors
-    return "undefined";
+    if (typeof data === 'string') return JSON.stringify(data);
+    if (typeof data === 'number') return JSON.stringify(data);
+    if (typeof data === 'object' && !(data instanceof Array)) return JSON.stringify(data);
+    if (typeof data === 'object' && (data instanceof Array)) return `[${data.map((e) => MeowDBUtils.stringifyData(e)).join(',')}]`;
+    if (typeof data === 'boolean') return data ? 'true' : 'false';
+    if (typeof data === 'undefined') return 'undefined';
+    // if data isn't a string/number/object/boolean/undefined, it will return "undefined" to not throw any errors
+    return 'undefined';
 };
 
 module.exports = MeowDBUtils;

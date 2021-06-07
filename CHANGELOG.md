@@ -1,7 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.2.1 - Fix some ID errors
+## 2.2.1 - yey
+- Better ID handling.
+- Improved TS typings (callbacks).
+- Improved MeowDBObject with `__id` and `__file` properties.
+- Added `.npmignore` to exclude some files in NPM.
+- Improved ESLint.
 - When filtering or finding, the generated MeowDBObject didn't save the full ID of the object, so the function `save` wouldn't save well.
 - Improved JSDocs.
 - Some functions are now *static* (in `MeowDBUtils`).
