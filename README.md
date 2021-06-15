@@ -1,13 +1,16 @@
+<div align="center">
+
 # MeowDB.js
 ![MeowDB](https://i.imgur.com/cC7AZ18.png)
 
 ![Downloads](https://img.shields.io/npm/dt/meowdb)  ![Minified Size](https://img.shields.io/bundlephobia/min/meowdb) ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/meowdb) ![License](https://img.shields.io/npm/l/meowdb) ![Last Commit](https://img.shields.io/github/last-commit/Drylozu/MeowDB.js) ![GitHub Repo stars](https://img.shields.io/github/stars/Drylozu/MeowDB.js?style=social)
 
 [![NPM](https://nodei.co/npm/meowdb.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/meowdb/)
+</div>
 
 "Database" in JSON (Node.JS Library).
 
-**Released v2.2.1**. See [CHANGELOG](https://github.com/Drylozu/MeowDB.js/blob/master/CHANGELOG.md).
+**Released v2.2.2**. See [CHANGELOG](https://github.com/Drylozu/MeowDB.js/blob/master/CHANGELOG.md).
 
 
 ## Installation
@@ -30,6 +33,8 @@ const myDatabase = new MeowDB({
 ```
 
 **TypeScript - ES6 import**
+
+With TypeScript you should've the `esModuleInterop` flag.
 ```ts
 import MeowDB from "meowdb";
 
@@ -39,7 +44,7 @@ const myDatabase: MeowDB = new MeowDB({
 });
 ```
 
-**Example of all functions**
+### Example of all functions
 ```js
 // Creating object (it'll search property by property and if it doesn't exist, it'll create it otherwise it'll not modify the current information~)
 // * where the first parameter is the ID, they're like properties of an object (same thing in most functions)
@@ -50,7 +55,7 @@ console.log(myDatabase.create("0001", {
 }));
 
 // Obtaining an object
-let object = myDatabase.get("0001");
+const object = myDatabase.get("0001");
 console.log(object);
 
 // Modifying an object and saving it
@@ -76,6 +81,32 @@ console.log(myDatabase.filter((user) => user.country === "CO"));
 
 // Deleting an object
 console.log(myDatabase.delete("0001"));
+```
+
+### Important note while using TypeScript**
+You can use TypeScript Generics to `create`/`get`/`update`/`set`/`find`/`filter` the data, it doesn't matter what type you use.
+```ts
+const nonObjectValue = myDatabase.get<string>('0002.name');
+console.log(nonObjectValue); // TS will interpret it as string
+
+const numberValue = myDatabase.get<number>('some id here');
+console.log(numberValue); // TS will interpret it as a number
+
+const booleanValue = myDatabase.get<boolean>('some id here');
+console.log(booleanValue); // TS will interpret it as a boolean
+
+// With Objects/also works with interfaces
+type Person = {
+    name: string;
+    country: string;
+    info: string;
+};
+
+const objectValue = myDatabase.get<Person>('0002'); // This will return a MeowDBObject with the properties that you specified in the generic type
+console.log(objectValue.name); // While typing '.name', you'll get *autocomplete*
+// It also works when you save an MeowDBObject
+objectValue.info = 'Hi!';
+objectValue.save(); // This will return a plain 'Person' object.
 ```
 
 ## "Documentation"

@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.2.2 - TypeScript!!!
+- You can use TypeScript Generics with MeowDB now. [README](https://github.com/Drylozu/MeowDB.js/blob/master/README.md).
+
 ## 2.2.1 - yey
 - Better ID handling.
 - Improved TS typings (callbacks).

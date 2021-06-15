@@ -91,25 +91,20 @@ declare module 'meowdb' {
     /**
      * An Object from a database
      */
-    class MeowDBObject {
-        public readonly __id: string;
-        public readonly __file: string;
-
-        /**
-         * A property of the object
-         */
-        [property: string]: any;
+    class MeowDBObject<T extends {} = {}> {
+        private readonly __id: string;
+        private readonly __file: string;
 
         /**
          * Saves the modified object
          */
-        public save(): Record<string, any>;
+        save(): T;
     }
 
     /**
      * Class representing a database
      */
-    export default class MeowDB {
+    class MeowDB {
         /**
          * The MeowDB private options
          */
@@ -140,7 +135,7 @@ declare module 'meowdb' {
          * @returns {any} The created element
          * @throws {MeowDBError} If the ID or initial value are invalid
          */
-        public create(id: string, initialValue: any): any;
+        public create<T = any>(id: string, initialValue: T): T;
 
         /**
          * Deletes an element from the database
@@ -148,7 +143,7 @@ declare module 'meowdb' {
          * @returns {any} The deleted element
          * @throws {MeowDBError} If the ID is invalid or the element doesn't exists
          */
-        public delete(id: string): any;
+        public delete<T = any>(id: string): T;
 
         /**
          * Checks if an element exists in the database
@@ -164,7 +159,7 @@ declare module 'meowdb' {
          * @returns {(MeowDBObject|any)} The element
          * @throws {MeowDBError} If the ID is invalid
          */
-        public get(id: string): MeowDBObject | any;
+        public get<T = any>(id: string): T extends object ? (MeowDBObject<T> & T) : T;
 
         /**
          * Sets the value of an element in the database
@@ -173,7 +168,7 @@ declare module 'meowdb' {
          * @returns {any} The value setted
          * @throws {MeowDBError} If the ID or value is invalid
          */
-        public set(id: string, value: any): any;
+        public set<T = any>(id: string, value: T): T;
 
 
         /**
@@ -183,7 +178,7 @@ declare module 'meowdb' {
          * @returns {(MeowDBObject|any)} The element
          * @throws {MeowDBError} If the ID or callback is invalid
          */
-        public find(callback: (data: any) => boolean, id?: string): MeowDBObject | any;
+        public find<T = any>(callback: (data: T) => boolean, id?: string): T extends object ? (MeowDBObject<T> & T) : T;
 
         /**
          * Filters elements in the database
@@ -192,6 +187,8 @@ declare module 'meowdb' {
          * @returns {(MeowDBObject|any)[]} The elements (MeowDBObject[] if they're objects, array with ID and value if not)
          * @throws {MeowDBError} If the ID or callback is invalid
          */
-        public filter(callback: (data: any) => boolean, id?: string): (MeowDBObject | any)[];
+        public filter<T = any>(callback: (data: T) => boolean, id?: string): (T extends object ? (MeowDBObject<T> & T) : T)[];
     }
+
+    export = MeowDB;
 }

@@ -147,7 +147,7 @@ class MeowDB {
         if (id !== '/' && !MeowDBUtils.validId(id)) throw new MeowDBError('Invalid ID provided, it shouldn\'t contain blank properties');
         if (typeof callback !== 'function') throw new MeowDBError('The callback must be a function');
         const data = id === '/' ? this._utils.getAll() : this._utils.get(id);
-        if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database"); /// trying to don't throw unnecessary errors
+        if (!data) return undefined;
         const element = Object.entries(data).find(([, e]) => callback(e));
         if (!element || !element[0]) return undefined;
         if (typeof element[1] === 'object' && !(element[1] instanceof Array)) return new MeowDBObject(element[1], id === '/' ? element[0] : `${id}.${element[0]}`, this._options.file);
@@ -165,7 +165,7 @@ class MeowDB {
         if (id !== '/' && !MeowDBUtils.validId(id)) throw new MeowDBError('Invalid ID provided, it shouldn\'t contain blank properties');
         if (typeof callback !== 'function') throw new MeowDBError('The callback must be a function');
         const data = id === '/' ? this._utils.getAll() : this._utils.get(id);
-        if (!data) return undefined; // throw new MeowDBError("That element specified by ID doesn't exists in the database") /// trying to don't throw unnecessary errors
+        if (!data) return undefined;
         const elements = Object.entries(data).filter(([, e]) => callback(e));
         if (!elements) return undefined;
         if (elements.every((e) => typeof e[1] === 'object')) return elements.map((e) => new MeowDBObject(e[1], id === '/' ? e[0] : `${id}.${e[0]}`, this._options.file));
@@ -173,4 +173,4 @@ class MeowDB {
     }
 }
 
-module.exports = MeowDB.default = MeowDB;
+module.exports = MeowDB;
