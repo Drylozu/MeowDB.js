@@ -12,6 +12,11 @@ declare module 'meowdb' {
          * The name of the database
          */
         name: string;
+
+        /**
+         * Specifies if plain objects are returned instead of MeowDBObjects
+         */
+        raw?: boolean;
     }
 
     /**
@@ -91,7 +96,7 @@ declare module 'meowdb' {
     /**
      * An Object from a database
      */
-    class MeowDBObject<T extends {} = {}> {
+    class FullMeowDBObject<T extends {} = {}> {
         private readonly __id: string;
         private readonly __file: string;
 
@@ -101,10 +106,12 @@ declare module 'meowdb' {
         save(): T;
     }
 
+    type MeowDBObject<T extends {} = {}, R extends 'raw' | 'full' = never> = R extends 'raw' ? {} : FullMeowDBObject<T>;
+
     /**
      * Class representing a database
      */
-    class MeowDB {
+    class MeowDB<R extends 'raw' | 'full' = 'full'> {
         /**
          * The MeowDB private options
          */
@@ -159,7 +166,7 @@ declare module 'meowdb' {
          * @returns {(MeowDBObject|any)} The element
          * @throws {MeowDBError} If the ID is invalid
          */
-        public get<T = any>(id: string): T extends object ? (MeowDBObject<T> & T) : T;
+        public get<T = any>(id: string): T extends object ? (MeowDBObject<T, R> & T) : T;
 
         /**
          * Sets the value of an element in the database
@@ -178,7 +185,7 @@ declare module 'meowdb' {
          * @returns {(MeowDBObject|any)} The element
          * @throws {MeowDBError} If the ID or callback is invalid
          */
-        public find<T = any>(callback: (data: T) => boolean, id?: string): T extends object ? (MeowDBObject<T> & T) : T;
+        public find<T = any>(callback: (data: T) => boolean, id?: string): T extends object ? (MeowDBObject<T, R> & T) : T;
 
         /**
          * Filters elements in the database
@@ -187,7 +194,7 @@ declare module 'meowdb' {
          * @returns {(MeowDBObject|any)[]} The elements (MeowDBObject[] if they're objects, array with ID and value if not)
          * @throws {MeowDBError} If the ID or callback is invalid
          */
-        public filter<T = any>(callback: (data: T) => boolean, id?: string): (T extends object ? (MeowDBObject<T> & T) : T)[];
+        public filter<T = any>(callback: (data: T) => boolean, id?: string): (T extends object ? (MeowDBObject<T, R> & T) : T)[];
     }
 
     export = MeowDB;

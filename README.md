@@ -10,7 +10,7 @@
 
 "Database" in JSON (Node.JS Library).
 
-**Released v2.2.2**. See [CHANGELOG](https://github.com/Drylozu/MeowDB.js/blob/master/CHANGELOG.md).
+**Released v2.2.3**. See [CHANGELOG](https://github.com/Drylozu/MeowDB.js/blob/master/CHANGELOG.md).
 
 
 ## Installation
@@ -28,7 +28,8 @@ const MeowDB = require("meowdb");
 
 const myDatabase = new MeowDB({
     dir: __dirname,
-    name: "database"
+    name: "database",
+    raw: false // Defines if MeowDBObjects will be returned (optional, default: false)
 });
 ```
 
@@ -37,10 +38,11 @@ const myDatabase = new MeowDB({
 With TypeScript you should've the `esModuleInterop` flag.
 ```ts
 import MeowDB from "meowdb";
-
-const myDatabase: MeowDB = new MeowDB({
+// The generic type is optional, by default it's "full" but when using the raw option, use "raw" instead of "full"
+const myDatabase = new MeowDB<'full'>({
     dir: __dirname,
-    name: "database"
+    name: "database",
+    raw: false // Defines if MeowDBObjects will be returned (optional, default: false)
 });
 ```
 
@@ -48,11 +50,12 @@ const myDatabase: MeowDB = new MeowDB({
 ```js
 // Creating object (it'll search property by property and if it doesn't exist, it'll create it otherwise it'll not modify the current information~)
 // * where the first parameter is the ID, they're like properties of an object (same thing in most functions)
-console.log(myDatabase.create("0001", {
+const newObject = myDatabase.create("0001", {
     name: "David",
     country: "CO",
     info: "Nothing to show"
-}));
+});
+console.log(newObject);
 
 // Obtaining an object
 const object = myDatabase.get("0001");
@@ -64,7 +67,8 @@ object.save();
 console.log(object.name);
 
 // Setting directly the value of an element
-console.log(myDatabase.set("0001.info", "Just a person"));
+const newName = myDatabase.set("0001.info", "Just a person");
+console.log(newName);
 
 // Listing all objects
 let temp = "";
@@ -74,16 +78,19 @@ Object.entries(myDatabase.all()).forEach((user) => {
 console.log(temp.trimRight());
 
 // Finding an object
-console.log(myDatabase.find((user) => user.name === "Deivid"));
+const anObject = myDatabase.find((user) => user.name === "Deivid");
+console.log(anObject);
 
 // Filtering objects
-console.log(myDatabase.filter((user) => user.country === "CO"));
+const someObjects = myDatabase.filter((user) => user.country === "CO");
+console.log(someObjects);
 
 // Deleting an object
-console.log(myDatabase.delete("0001"));
+const deletedObject = myDatabase.delete("0001");
+console.log(deletedObject);
 ```
 
-### Important note while using TypeScript**
+### Important note while using TypeScript
 You can use TypeScript Generics to `create`/`get`/`update`/`set`/`find`/`filter` the data, it doesn't matter what type you use.
 ```ts
 const nonObjectValue = myDatabase.get<string>('0002.name');
@@ -106,6 +113,8 @@ const objectValue = myDatabase.get<Person>('0002'); // This will return a MeowDB
 console.log(objectValue.name); // While typing '.name', you'll get *autocomplete*
 // It also works when you save an MeowDBObject
 objectValue.info = 'Hi!';
+
+/// Important: Read the note in the Usage/TypeScript section.
 objectValue.save(); // This will return a plain 'Person' object.
 ```
 

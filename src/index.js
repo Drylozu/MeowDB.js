@@ -9,6 +9,7 @@ const fs = require('fs');
  * @typedef {Object} MeowDBOptions
  * @property {string} dir The directory path of the database
  * @property {string} name The name of the database
+ * @property {boolean} raw Specifies if plain objects are returned instead of MeowDBObjects
  */
 
 /**
@@ -24,7 +25,7 @@ class MeowDB {
      * @param {MeowDBOptions} options MeowDB options object
      * @throws {MeowDBError} If any value is invalid
      */
-    constructor(options = {}) {
+    constructor(options = { raw: false }) {
         if (!options) throw new MeowDBError('The options are required');
         if (typeof options !== 'object') throw new MeowDBError('The options must be an object');
         if (!options.dir) throw new MeowDBError('The directory path is required');
@@ -33,6 +34,8 @@ class MeowDB {
         if (typeof options.name !== 'string') throw new MeowDBError('The name of the database must be an string');
         if (!fs.existsSync(options.dir)) throw new MeowDBError('The directory must be valid');
         if (options.name.length < 1) throw new MeowDBError('The name must have more of one character');
+
+        options.raw = !!options.raw;
 
         /**
          * The options of the database
@@ -66,7 +69,7 @@ class MeowDB {
      */
     all() {
         const data = this._utils.getAll();
-        if (typeof data === 'object' && !(data instanceof Array))
+        if (!this._options.raw && typeof data === 'object' && !(data instanceof Array))
             return new MeowDBObject(data, '/', this._options.file);
         else return data;
     }
@@ -119,7 +122,7 @@ class MeowDB {
     get(id) {
         if (!MeowDBUtils.validId(id)) throw new MeowDBError('Invalid ID provided, it shouldn\'t contain blank properties');
         const data = this._utils.get(id);
-        if (typeof data === 'object' && !(data instanceof Array)) return new MeowDBObject(data, id, this._options.file);
+        if (!this._options.raw && typeof data === 'object' && !(data instanceof Array)) return new MeowDBObject(data, id, this._options.file);
         else return data;
     }
 
@@ -150,7 +153,7 @@ class MeowDB {
         if (!data) return undefined;
         const element = Object.entries(data).find(([, e]) => callback(e));
         if (!element || !element[0]) return undefined;
-        if (typeof element[1] === 'object' && !(element[1] instanceof Array)) return new MeowDBObject(element[1], id === '/' ? element[0] : `${id}.${element[0]}`, this._options.file);
+        if (!this._options.raw && typeof element[1] === 'object' && !(element[1] instanceof Array)) return new MeowDBObject(element[1], id === '/' ? element[0] : `${id}.${element[0]}`, this._options.file);
         else return element[1];
     }
 
@@ -168,7 +171,7 @@ class MeowDB {
         if (!data) return undefined;
         const elements = Object.entries(data).filter(([, e]) => callback(e));
         if (!elements) return undefined;
-        if (elements.every((e) => typeof e[1] === 'object')) return elements.map((e) => new MeowDBObject(e[1], id === '/' ? e[0] : `${id}.${e[0]}`, this._options.file));
+        if (!this._options.raw && elements.every((e) => typeof e[1] === 'object' && !(e[1] instanceof Array))) return elements.map((e) => new MeowDBObject(e[1], id === '/' ? e[0] : `${id}.${e[0]}`, this._options.file));
         else return elements;
     }
 }

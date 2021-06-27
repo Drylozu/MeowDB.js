@@ -34,11 +34,11 @@ class MeowDBObject {
         let info = '';
         if (this.__id)
             this.__id.split('.').forEach((s) => {
-                info += `["${s.replace(/\n/g, '\\n').replace(/"/g, '\\"')}"]`;
+                info += `[${JSON.stringify(s)}]`;
             });
         Object.entries(this).forEach((i) => {
             if (!validValue(i[1])) throw new MeowDBError('One of the defined values aren\'t a string, number, object, array, undefined or a boolean');
-            eval(`allData${info}["${i[0]}"] = ${stringifyData(i[1])};`);
+            eval(`allData${info}[${JSON.stringify(i[0])}] = ${stringifyData(i[1])};`);
         });
         fs.writeFileSync(this.__file, JSON.stringify(allData));
         return eval(`allData${info}`);
