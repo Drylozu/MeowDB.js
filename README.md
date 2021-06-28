@@ -16,8 +16,6 @@
 ## Installation
 - `npm install meowdb --save`.
 
-_Also available in Ruby! [MeowDB.rb](https://rubygems.org/gems/meowdb)_
-
 _I recommend not using versions lower than **2.1.9** or being aware of updates to the library._
 
 
@@ -137,13 +135,14 @@ Creates or gets a database
     - `options` - An object with the options
         - `options.dir` - A string indicating the directory that will have the database (must be an absolute path - the folder should be created)
         - `options.name` - A string with the name of the database
+        - `options.raw?` - A boolean that represents if MeowDBObjects won't returned (default: `false`, MeowDBObjects will be returned).
 - **Throws**: [`MeowDBError`](#meowdberror) - If any option is invalid
 
 
 ### Methods
 #### `all()`
 Returns all data stored in the database
-- **Returns**: `MeowDBObject` - All data
+- **Returns**: `MeowDBObject | object` - All data
 <hr>
 
 #### `create(id, initialValue)`
@@ -151,7 +150,7 @@ Creates an element in the database with the specified ID and sets it's value
 - **Parameters**:
     - `id` - A string representing the ID of the element to create
     - `initialValue` - The initial value of the element
-- **Returns**: `Object` - The created element
+- **Returns**: `object` - The created element
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID or initialValue is invalid
 <hr>
 
@@ -159,7 +158,7 @@ Creates an element in the database with the specified ID and sets it's value
 Deletes an element from the database
 - **Parameters**:
     - `id` - A string representing the ID of the element to delete
-- **Returns**: `Object` - The deleted element
+- **Returns**: `object` - The deleted element
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID is invalid
 <hr>
 
@@ -167,7 +166,7 @@ Deletes an element from the database
 Checks if an element exists in the database
 - **Parameters**:
     - `id` - A string representing the ID of the element to check
-- **Returns**: `Boolean` - If it exists
+- **Returns**: `boolean` - If it exists
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID is invalid
 <hr>
 
@@ -175,7 +174,7 @@ Checks if an element exists in the database
 Gets an element of the database
 - **Parameters**:
     - `id` - A string representing the ID of the element to get
-- **Returns**: `*` - The element
+- **Returns**: `MeowDBObject | object | any` - The element
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID is invalid
 <hr>
 
@@ -184,7 +183,7 @@ Sets the value of an element in the database
 - **Parameters**:
     - `id` - A string representing the ID of the element to update
     - `value` - The new value of the element
-- **Returns**: `*` - The value setted
+- **Returns**: `any` - The value setted
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID or value is invalid
 <hr>
 
@@ -194,7 +193,7 @@ You __should only__ use this function if you're finding for objects
 - **Parameters**:
 - `callback` - A function that handles all the elements and decides which one will be returned
     - `id?` - A string representing the ID of the root element to find another elements _(optional)_
-- **Returns**: `*` - The element
+- **Returns**: `MeowDBObject | object | any` - The element
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID or callback is invalid
 <hr>
 
@@ -204,7 +203,7 @@ You __should only__ use this function if you're filtering for objects
 - **Parameters**:
     - `callback` - A function that handles all the elements and decides which ones will be returned
     - `id?` - A string representing the ID of the root element to find another elements _(optional)_
-- **Returns**: `*` - The elements (MeowDBObject[] if they're objects, array with ID and value if not)
+- **Returns**: `(MeowDBObject | object | [string, any])[]` - The elements (MeowDBObject[] if they're objects, array with ID and value if not)
 - **Throws**: [`MeowDBError`](#meowdberror) - If the ID or callback is invalid
 
 
